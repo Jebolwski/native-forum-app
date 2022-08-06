@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       setUser(jwt_decode(data.access));
       AsyncStorage.setItem("authTokens", JSON.stringify(data));
       AsyncStorage.setItem("user", JSON.stringify(jwt_decode(data.access)));
-      return "True";
+      return "OK";
     }
   };
 

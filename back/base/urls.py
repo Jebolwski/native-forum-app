@@ -1,7 +1,5 @@
-from django.urls import path,include
-from . import views
-from .views import AddNote, MyTokenObtainPairView
-from django.contrib.auth import views as authview
+from django.urls import path
+from .views import MyTokenObtainPairView
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )

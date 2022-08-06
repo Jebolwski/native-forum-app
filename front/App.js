@@ -12,7 +12,9 @@ export default function App() {
       <TailwindProvider>
         <AuthProvider>
           <Stack.Navigator
-            screenOptions={{ headerTitleAlign: "center" }}
+            screenOptions={{
+              headerTitleAlign: "center",
+            }}
             initialRouteName="Login"
           >
             <Stack.Screen

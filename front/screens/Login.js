@@ -1,11 +1,45 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, TextInput, Button } from "react-native";
+import React, { useContext, useState } from "react";
+import AuthContext from "../AuthContext";
+import { colors } from "../colors/colors";
 
-const Login = () => {
+const Login = ({ navigation }) => {
+  let { loginUser } = useContext(AuthContext);
+  const [username1, setUsername1] = useState();
+  const [password1, setPassword1] = useState();
   return (
-    <View>
-      <Text>Login</Text>
-    </View>
+    <>
+      <View className="mx-auto items-center">
+        <TextInput
+          className="px-4 w-2/3 py-1 rounded-lg mt-14 border-2 bg-white border-green-700"
+          placeholder="Username"
+          onChangeText={(text) => {
+            setUsername1(text);
+          }}
+        />
+        <TextInput
+          className="px-4 w-2/3 py-1 rounded-lg mt-10 border-2  bg-white border-green-700"
+          secureTextEntry={true}
+          onChangeText={(text) => {
+            setPassword1(text);
+          }}
+          placeholder="Password"
+        />
+        <View className="mt-9">
+          <Button
+            title="Login"
+            color={colors.button}
+            onPress={async () => {
+              let response = await loginUser(username1, password1);
+              if (response === "OK") {
+                navigation.navigate("Home");
+                console.log(response);
+              }
+            }}
+          />
+        </View>
+      </View>
+    </>
   );
 };
 
