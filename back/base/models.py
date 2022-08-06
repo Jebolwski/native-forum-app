@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Forum(models.Model):
+class Form(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
     body = models.TextField(max_length=160,null=False,blank=False)
     image = models.ImageField(upload_to="profilePhotos",null=False,blank=False,default="default.jpg")

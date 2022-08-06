@@ -1,3 +1,5 @@
+from http.client import HTTPResponse
+from urllib import request
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -17,3 +19,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+def CreateForm(request):
+    print(request.POST)
+    return (request.POST)

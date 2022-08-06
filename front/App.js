@@ -1,5 +1,6 @@
 import AuthContext, { AuthProvider } from "./AuthContext";
 import Home from "./screens/Home";
+import CreateForm from "./screens/CreateForm";
 import Login from "./screens/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -30,6 +31,14 @@ export default function App() {
               }}
               name="Login"
               component={Login}
+            />
+            <Stack.Screen
+              options={{
+                headerTitle: "Create a form",
+                headerShown: true,
+              }}
+              name="CreateForm"
+              component={CreateForm}
             />
           </Stack.Navigator>
         </AuthProvider>

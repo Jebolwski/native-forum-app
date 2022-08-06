@@ -11,14 +11,14 @@ const Login = ({ navigation }) => {
     <>
       <View className="mx-auto items-center">
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-14 border-2 bg-white border-green-700"
+          className="px-4 w-2/3 py-1 rounded-lg mt-14 bg-white border-green-700 border-b-2"
           placeholder="Username"
           onChangeText={(text) => {
             setUsername1(text);
           }}
         />
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-10 border-2  bg-white border-green-700"
+          className="px-4 w-2/3 py-1 rounded-lg mt-10  bg-white border-green-700 border-b-2"
           secureTextEntry={true}
           onChangeText={(text) => {
             setPassword1(text);
