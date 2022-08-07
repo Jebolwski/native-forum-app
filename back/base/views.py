@@ -33,7 +33,7 @@ def CreateForm(request):
 
 @api_view(['GET'])
 def Forms(request):
-    forms = Form.objects.all().order_by("-update")
+    forms = Form.objects.all().order_by('-edit')
     serializer = FormSerializer(forms, many=True)
     for form in forms:
         print(form)

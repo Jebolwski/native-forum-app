@@ -3,12 +3,12 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
 from .models import Form
-
-
+from datetime import datetime 
 
 
 class FormSerializer(ModelSerializer):
     username = serializers.SerializerMethodField('get_username')
+    time_since = serializers.SerializerMethodField('get_timesince')
     class Meta:
         model       = Form
         fields      = "__all__"
@@ -16,3 +16,7 @@ class FormSerializer(ModelSerializer):
     def get_username(self,form):
         username = Form.objects.get(id=form.id).user.username
         return username
+
+    def get_timesince(self,form):
+        time = Form.objects.get(id=form.id).edit.strftime("%d %B %Y")
+        return time

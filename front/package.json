@@ -22,6 +22,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.17.7",
     "react-navigation": "^4.4.4",
+    "react-slugify": "^2.1.0",
     "tailwindcss-react-native": "^1.7.10"
   },
   "devDependencies": {

@@ -6,8 +6,9 @@ import {
   TextInput,
   Button,
   Text,
+  LayoutAnimation,
 } from "react-native";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
 import AuthContext from "../AuthContext";
 import FormSingle from "../screens/FormSingle";
@@ -32,26 +33,48 @@ const Home = ({ navigation }) => {
     }
   };
   const createForm = async () => {
-    let response = await fetch("http://192.168.0.11:19002/api/create-form/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        body: body,
-        user: user.user_id,
-      }),
-    });
-    if (response.status == "200") {
-      let data = await response.json();
-      setForms([...forms, data]);
+    if (body == "" || body == undefined || body == null) {
+      alert("Enter something to add a note.");
+    } else {
+      let response = await fetch("http://192.168.0.11:19002/api/create-form/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          body: body,
+          user: user.user_id,
+        }),
+      });
+      if (response.status == "200") {
+        let data = await response.json();
+        setForms([data, ...forms]);
+        LayoutAnimation.configureNext(layoutconfig);
+        setBody("");
+        textRef.current.clear();
+      }
     }
   };
   const isFocused = useIsFocused();
 
+  const layoutconfig = {
+    duration: 300,
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+    delete: {
+      duration: 100,
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+  };
+
   useEffect(() => {
     FormsGel();
   }, [isFocused]);
+
+  let textRef = useRef();
 
   useEffect(() => {
     FormsGel();
@@ -63,23 +86,35 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView className="w-full h-full mt-12 bg-gray-100">
       <View className="shadow-sm mt-6">
-        <View className="mt-3.5 items-end w-10/12">
+        <View className="mt-3.5 items-center w-full relative">
           <TextInput
             placeholder="What's happening ?"
-            className="w-5/6 rounded-lg border-2 border-black-100 bg-gray-200 p-2"
+            className="w-5/6 rounded-lg border-2 border-black-100 bg-gray-100 p-2"
             multiline={true}
-            numberOfLines={5}
+            numberOfLines={4}
+            ref={textRef}
             onChangeText={(text) => {
               setBody(text);
             }}
           />
-          <Text style={styles.btn} onPress={createForm}>
+          <Text
+            style={[
+              styles.btn,
+              { position: "absolute", right: 25, bottom: 6, zIndex: 1 },
+            ]}
+            onPress={createForm}
+          >
             Add
           </Text>
         </View>
-        <ScrollView className="h-3/4">
+
+        <ScrollView
+          className="h-3/4 mt-8"
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           {forms.map((form) => {
-            return <FormSingle form={form} />;
+            return <FormSingle key={form.id} form={form} />;
           })}
         </ScrollView>
       </View>
@@ -89,7 +124,7 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: colors.dark_button,
+    backgroundColor: colors.button,
     padding: 6,
     marginRight: 10,
     marginTop: 4,
