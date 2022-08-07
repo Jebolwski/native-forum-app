@@ -7,6 +7,7 @@ const Login = ({ navigation }) => {
   let { loginUser } = useContext(AuthContext);
   const [username1, setUsername1] = useState();
   const [password1, setPassword1] = useState();
+
   return (
     <>
       <View className="mx-auto items-center">
@@ -33,7 +34,6 @@ const Login = ({ navigation }) => {
               let response = await loginUser(username1, password1);
               if (response === "OK") {
                 navigation.navigate("Home");
-                console.log(response);
               }
             }}
           />

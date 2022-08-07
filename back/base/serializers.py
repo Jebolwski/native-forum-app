@@ -7,8 +7,12 @@ from .models import Form
 
 
 
-class NoteSerializer(ModelSerializer):
-
+class FormSerializer(ModelSerializer):
+    username = serializers.SerializerMethodField('get_username')
     class Meta:
         model       = Form
         fields      = "__all__"
+
+    def get_username(self,form):
+        username = Form.objects.get(id=form.id).user.username
+        return username

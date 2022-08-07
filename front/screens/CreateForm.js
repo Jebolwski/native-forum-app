@@ -1,21 +1,26 @@
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { colors } from "../colors/colors";
+import AuthContext from "../AuthContext";
 
-const CreateForm = () => {
+const CreateForm = ({ navigation }) => {
   const [body, setBody] = useState();
-
+  let { user } = useContext(AuthContext);
   const createForm = async () => {
     let response = await fetch("http://192.168.0.11:19002/api/create-form/", {
       method: "POST",
-      credentials: "same-origin",
-      headers: { "X-CSRFToken": "{{csrf_token}}" },
-      body: {
-        body: body,
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        body: body,
+        user: user.user_id,
+      }),
     });
-    console.log(response.status);
+    if (response.status == "200") {
+      navigation.navigate("Home");
+    }
   };
 
   return (

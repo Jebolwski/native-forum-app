@@ -1,7 +1,11 @@
-from http.client import HTTPResponse
-from urllib import request
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .models import Form
+from .serializers import FormSerializer
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -20,7 +24,18 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-
+@api_view(['GET','POST'])
 def CreateForm(request):
-    print(request.POST)
-    return (request.POST)
+    serializer = FormSerializer(data = request.data, many=False)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def Forms(request):
+    forms = Form.objects.all().order_by("-update")
+    serializer = FormSerializer(forms, many=True)
+    for form in forms:
+        print(form)
+    return Response(serializer.data)
+
