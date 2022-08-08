@@ -5,6 +5,7 @@ class Form(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
     body = models.TextField(max_length=160,null=False,blank=False)
     image = models.ImageField(upload_to="profilePhotos",null=False,blank=False,default="default.jpg")
+    goruldu = models.ManyToManyField(User,related_name='goruldu')
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)
 

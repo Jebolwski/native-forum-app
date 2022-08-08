@@ -39,3 +39,9 @@ def Forms(request):
         print(form)
     return Response(serializer.data)
 
+@api_view(['GET','POST'])
+def DeleteForm(request,pk):
+    form = Form.objects.get(id=pk)
+    form.delete()
+    return Response("OK")
+

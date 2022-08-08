@@ -55,6 +55,21 @@ const Home = ({ navigation }) => {
       }
     }
   };
+
+  const deleteForm = async (id) => {
+    let response = await fetch(`http://192.168.0.11:19002/api/form/${id}/delete/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+    });
+    if (response.status == "200") {
+        let data = forms.filter(function (form){
+          return form.id!=id
+        }) 
+        setForms(data);
+    }
+  };
   const isFocused = useIsFocused();
 
   const layoutconfig = {
@@ -114,7 +129,7 @@ const Home = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
         >
           {forms.map((form) => {
-            return <FormSingle key={form.id} form={form} />;
+            return <FormSingle key={form.id} form={form} forms={forms} setForms={setForms} />;
           })}
         </ScrollView>
       </View>

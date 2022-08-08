@@ -17,5 +17,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('create-form/', views.CreateForm, name='create-form'),
     path('forms/', views.Forms, name='forms'),
+    path('form/<int:pk>/delete/', views.DeleteForm, name='delete-form'),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
