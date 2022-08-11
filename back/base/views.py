@@ -26,6 +26,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['GET','POST'])
 def CreateForm(request):
+    print(request.data)
     serializer = FormSerializer(data = request.data, many=False)
     if serializer.is_valid():
         serializer.save()

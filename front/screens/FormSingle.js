@@ -19,12 +19,14 @@ const FormSingle = (props) => {
         props.setForms(data);
     }
   };
+  console.log(props.form);
   return (
     <View className="items-center w-full">
       <View className="p-2 w-5/6 bg-gray-200 border-2 rounded-md border-gray-600 shadow-md mt-4 ">
         <View className="flex-row justify-between">
           <Text>
-            {props.form.username} • {props.form.time_since}
+            {props.form.username} • 
+            <Text className="font-light pl-3"> {props.form.create}</Text>
           </Text>
           <Icon name="trash" size={15} color={"darkred"} onPress={()=>{
             deleteForm(props.form.id)

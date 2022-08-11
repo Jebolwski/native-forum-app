@@ -8,7 +8,6 @@ from datetime import datetime
 
 class FormSerializer(ModelSerializer):
     username = serializers.SerializerMethodField('get_username')
-    time_since = serializers.SerializerMethodField('get_timesince')
     class Meta:
         model       = Form
         fields      = "__all__"
@@ -20,3 +19,7 @@ class FormSerializer(ModelSerializer):
     def get_timesince(self,form):
         time = Form.objects.get(id=form.id).edit.strftime("%d %B %Y")
         return time
+
+    def get_id(self,form):
+        id = Form.objects.get(id=form.id).id
+        return id

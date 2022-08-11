@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Button,
   Text,
   LayoutAnimation,
 } from "react-native";
@@ -94,7 +93,6 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     FormsGel();
   }, []);
-
   BackHandler.addEventListener("hardwareBackPress", function () {
     return true;
   });
