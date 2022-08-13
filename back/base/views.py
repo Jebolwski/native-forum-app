@@ -2,9 +2,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
-from .models import Form
-from .serializers import FormSerializer
+from django.contrib.auth.models import User
+from .models import Form, Profile
+from .serializers import FormSerializer, ProfileSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -45,4 +45,10 @@ def DeleteForm(request,pk):
     form = Form.objects.get(id=pk)
     form.delete()
     return Response("OK")
+
+@api_view(['GET'])
+def GetProfile(request,pk):
+    profile = Profile.objects.get(user=User.objects.get(id=pk))
+    serializer = ProfileSerializer(profile,many=False)
+    return Response(serializer.data)
 

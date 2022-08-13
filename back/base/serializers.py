@@ -2,7 +2,7 @@ from dataclasses import field
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
-from .models import Form
+from .models import Form, Profile
 from datetime import datetime 
 
 
@@ -23,3 +23,9 @@ class FormSerializer(ModelSerializer):
     def get_id(self,form):
         id = Form.objects.get(id=form.id).id
         return id
+
+
+class ProfileSerializer(ModelSerializer):
+    class Meta:
+        model       = Profile
+        fields      = "__all__"

@@ -18,5 +18,6 @@ urlpatterns = [
     path('create-form/', views.CreateForm, name='create-form'),
     path('forms/', views.Forms, name='forms'),
     path('form/<int:pk>/delete/', views.DeleteForm, name='delete-form'),
+    path('profile/<int:pk>/', views.GetProfile, name='profile'),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
