@@ -1,6 +1,6 @@
 export const colors = {
-  button: "#78b62e",
-  icon: "#78b62e",
-  dark_icon: "#63902d",
-  dark_button: "#63902d",
+  button: "rgb(41, 37, 36)",
+  icon: "rgb(49, 45, 44)",
+  dark_icon: "#fff",
+  dark_button: "#fff",
 };

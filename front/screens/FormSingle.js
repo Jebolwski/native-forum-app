@@ -24,11 +24,14 @@ const FormSingle = (props) => {
   };
   return (
     <View className="items-center w-full">
-      <View className="p-2 w-5/6 bg-gray-200 border-2 rounded-md border-gray-600 shadow-md mt-4 ">
+      <View className="p-2 w-full border-b-2 border-t-2 border-white shadow-md mt-4 bg-stone-800">
         <View className="flex-row justify-between">
-          <Text>
+          <Text className="text-white">
             {props.form.username} •
-            <Text className="font-light pl-3"> {props.form.create}</Text>
+            <Text className="font-light pl-3 text-white">
+              {" "}
+              {props.form.create}
+            </Text>
           </Text>
           <Icon
             name="trash"
@@ -39,19 +42,19 @@ const FormSingle = (props) => {
             }}
           />
         </View>
-        <Text className="mt-3">{props.form.body}</Text>
-        <View className="flex-row justify-around mt-4 mb-1">
+        <Text className="mt-3 text-white">{props.form.body}</Text>
+        <View className="flex-row justify-around mt-4 mb-1 ">
           <Text>
             <Icon name="comment" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3">0</Text>
+            <Text className="ml-3 text-white">0</Text>
           </Text>
           <Text>
             <Icon name="retweet" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3">0</Text>
+            <Text className="ml-3 text-white">0</Text>
           </Text>
           <Text>
             <Icon name="heart" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3">0</Text>
+            <Text className="ml-3 text-white">0</Text>
           </Text>
         </View>
       </View>

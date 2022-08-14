@@ -3,7 +3,7 @@ import React from "react";
 
 const Settings = () => {
   return (
-    <View>
+    <View className="bg-stone-800">
       <Text>Settings</Text>
     </View>
   );

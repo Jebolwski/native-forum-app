@@ -7,7 +7,7 @@ import {
   Text,
   LayoutAnimation,
   Image,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
@@ -122,12 +122,12 @@ const Home = ({ navigation }) => {
   if (!profile) {
     return (
       <View>
-        <Text className="text-center">Yükleniyor...</Text>
+        <Text className="text-center twxt-white">Yükleniyor...</Text>
       </View>
     );
   } else {
     return (
-      <SafeAreaView className="container h-full mt-12 bg-gray-100">
+      <SafeAreaView className="container h-full bg-stone-800" sty>
         <View className="shadow-sm mt-6">
           <View className="flex flex-row justify-evenly">
             <View
@@ -137,7 +137,7 @@ const Home = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Text className="font-bold">{user.username}</Text>
+              <Text className="font-bold text-white">{user.username}</Text>
             </View>
             <View
               style={{
@@ -145,19 +145,13 @@ const Home = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Settings");
                 }}
               >
-                <Image
-                  className="border border-slate-500"
-                  style={styles.settings_icon}
-                  source={{
-                    uri: `https://freeiconshop.com/wp-content/uploads/edd/settings-solid.png`,
-                  }}
-                />
-              </TouchableWithoutFeedback>
+                <Icon name="gear" size={26} color="white" />
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -165,24 +159,25 @@ const Home = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Profile");
                 }}
               >
                 <Image
-                  style={styles.profile_icon}
+                  className=" w-9 h-9 rounded-full"
+                  style={{ borderColor: "white", borderWidth: 1 }}
                   source={{
                     uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
                   }}
                 />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
           </View>
           <View className="mt-3.5 items-center w-full relative">
             <TextInput
               placeholder="What's happening ?"
-              className="w-5/6 rounded-lg border-2 border-black-100 bg-gray-100 p-2"
+              className="w-5/6 rounded-lg border-2 border-white bg-stone-800 p-2 placeholder-white"
               multiline={true}
               numberOfLines={4}
               ref={textRef}
@@ -243,7 +238,7 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "white",
   },
 });
 
