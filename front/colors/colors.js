@@ -3,4 +3,5 @@ export const colors = {
   icon: "rgb(49, 45, 44)",
   dark_icon: "#fff",
   dark_button: "#fff",
+  blue: "rgb(29, 155, 240)",
 };

@@ -1,6 +1,9 @@
 import { View, Text } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
+import EvilIcon from "react-native-vector-icons/EvilIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 
@@ -24,19 +27,29 @@ const FormSingle = (props) => {
   };
   return (
     <View className="items-center w-full">
-      <View className="p-2 w-full border-b-2 border-t-2 border-white shadow-md mt-4 bg-stone-800">
+      <View
+        className="p-2 w-full shadow-md bg-stone-800"
+        style={{
+          borderColor: "white",
+          borderWidth: 1,
+        }}
+      >
         <View className="flex-row justify-between">
           <Text className="text-white">
-            {props.form.username} •
+            {props.form.username}{" "}
+            <Text className="font-light" style={{ fontSize: 12 }}>
+              {" "}
+              @{slugify(props.form.username)}{" "}
+            </Text>
             <Text className="font-light pl-3 text-white">
               {" "}
               {props.form.create}
             </Text>
           </Text>
-          <Icon
-            name="trash"
+          <Entypo
+            name="dots-three-horizontal"
             size={15}
-            color={"darkred"}
+            color={"rgba(255,255,255,0.7)"}
             onPress={() => {
               deleteForm(props.form.id);
             }}
@@ -45,15 +58,15 @@ const FormSingle = (props) => {
         <Text className="mt-3 text-white">{props.form.body}</Text>
         <View className="flex-row justify-around mt-4 mb-1 ">
           <Text>
-            <Icon name="comment" size={15} color={colors.dark_button} />{" "}
+            <Icon name="comment-o" size={15} color={colors.dark_button} />{" "}
             <Text className="ml-3 text-white">0</Text>
           </Text>
           <Text>
-            <Icon name="retweet" size={15} color={colors.dark_button} />{" "}
+            <AntDesign name="retweet" size={15} color={colors.dark_button} />{" "}
             <Text className="ml-3 text-white">0</Text>
           </Text>
           <Text>
-            <Icon name="heart" size={15} color={colors.dark_button} />{" "}
+            <Icon name="heart-o" size={15} color={colors.dark_button} />{" "}
             <Text className="ml-3 text-white">0</Text>
           </Text>
         </View>

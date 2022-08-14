@@ -3,8 +3,8 @@ import React from "react";
 
 const Settings = () => {
   return (
-    <View className="bg-stone-800">
-      <Text>Settings</Text>
+    <View className="bg-stone-800 h-full">
+      <Text className="text-white text-center">Settings</Text>
     </View>
   );
 };
