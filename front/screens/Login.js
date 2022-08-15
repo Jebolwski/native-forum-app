@@ -38,7 +38,7 @@ const Login = ({ navigation }) => {
             onPress={async () => {
               let response = await loginUser(username1, password1);
               if (response === "OK") {
-                navigation.navigate("HomeStack");
+                navigation.navigate("Home");
               }
             }}
           />

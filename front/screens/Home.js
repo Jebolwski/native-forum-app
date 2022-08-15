@@ -50,7 +50,7 @@ const Home = ({ navigation }) => {
         },
         body: JSON.stringify({
           body: body,
-          user: user.user_id,
+          user: user?.user_id,
         }),
       });
       if (response.status == "200") {
@@ -97,7 +97,7 @@ const Home = ({ navigation }) => {
 
   let getProfile = async (props) => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${user.user_id}/`,
+      `http://192.168.0.11:19002/api/profile/${user?.user_id}/`,
       {
         method: "GET",
         headers: {
@@ -142,7 +142,7 @@ const Home = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Text className="font-bold text-white">{user.username}</Text>
+              <Text className="font-bold text-white">{user?.username}</Text>
             </View>
             <View
               style={{
@@ -183,7 +183,7 @@ const Home = ({ navigation }) => {
           <View className="mt-3.5 items-center w-full relative text-input">
             <TextInput
               placeholder="What's happening ?"
-              className="w-5/6 rounded-lg bg-stone-800 p-2 text-white"
+              className="w-full rounded-lg bg-stone-800 p-2 text-white"
               style={{ borderWidth: 1, borderColor: "white" }}
               multiline={true}
               placeholderTextColor="white"

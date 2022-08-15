@@ -10,7 +10,7 @@ import Settings from "./screens/Settings";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import BottomNavigator from "./components/BottomNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,13 +53,12 @@ function ProfileStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="ProfileStack" component={Profile} />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
-  const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer>
       <View style={{ padding: 0, margin: 0 }}>
@@ -67,7 +66,7 @@ export default function App() {
       </View>
       <TailwindProvider>
         <AuthProvider>
-          <Tab.Navigator
+          <Stack.Navigator
             initialRouteName="Login"
             screenOptions={{
               headerShown: false,
@@ -88,38 +87,12 @@ export default function App() {
               },
             }}
           >
-            <Tab.Screen
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <IonIcons name="home-outline" size={20} color={color} />
-                ),
-              }}
-              name="Home"
-              component={HomeStack}
-            />
-
-            <Tab.Screen
-              options={{
-                headerTitle: "Profile",
-                tabBarIcon: ({ color, size }) => (
-                  <Icon name="user-circle" size={20} color={color} />
-                ),
-              }}
-              name="Profile"
-              component={ProfileStack}
-            />
-            <Tab.Screen
-              options={{
-                headerTitle: "Settings",
-                headerShown: false,
-                tabBarIcon: ({ color, size }) => (
-                  <Icon name="gear" size={20} color={color} />
-                ),
-              }}
-              name="Settings"
-              component={SettingsStack}
-            />
-          </Tab.Navigator>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="Login" component={Login} />
+          </Stack.Navigator>
+          <BottomNavigator />
         </AuthProvider>
       </TailwindProvider>
     </NavigationContainer>
