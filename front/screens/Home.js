@@ -8,6 +8,7 @@ import {
   Image,
   LayoutAnimation,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
@@ -17,6 +18,8 @@ import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Evil from "react-native-vector-icons/EvilIcons";
 import Foundation from "react-native-vector-icons/Foundation";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { colors } from "../colors/colors";
 
 const Home = ({ navigation }) => {
@@ -24,6 +27,7 @@ const Home = ({ navigation }) => {
   const [forms, setForms] = useState([]);
   const [profile, setProfile] = useState();
   const [body, setBody] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
   );
@@ -59,6 +63,7 @@ const Home = ({ navigation }) => {
         LayoutAnimation.configureNext(layoutconfig);
         setBody("");
         textRef.current.clear();
+        setModalVisible(false);
       }
     }
   };
@@ -132,32 +137,9 @@ const Home = ({ navigation }) => {
     );
   } else {
     return (
-      <SafeAreaView className="container h-full bg-stone-800">
-        <View className="shadow-sm mt-6">
-          <View className="flex flex-row justify-evenly">
-            <View
-              className="grid grid-cols-1 content-center"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Text className="font-bold text-white">{user?.username}</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Settings");
-                }}
-              >
-                <Icon name="gear" size={26} color="white" />
-              </TouchableOpacity>
-            </View>
+      <SafeAreaView className="container h-full bg-white">
+        <View className="shadow-sm ">
+          <View className="flex flex-row justify-between px-4 py-3 border-b border-black">
             <View
               style={{
                 display: "flex",
@@ -170,7 +152,7 @@ const Home = ({ navigation }) => {
                 }}
               >
                 <Image
-                  className=" w-9 h-9 rounded-full"
+                  className=" w-10 h-10 rounded-full border border-black"
                   style={{ borderColor: "white", borderWidth: 1 }}
                   source={{
                     uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
@@ -178,68 +160,130 @@ const Home = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-          </View>
-
-          <View className="mt-3.5 items-center w-full relative text-input">
-            <TextInput
-              placeholder="What's happening ?"
-              className="w-full rounded-lg bg-stone-800 p-2 text-white"
-              style={{ borderWidth: 1, borderColor: "white" }}
-              multiline={true}
-              placeholderTextColor="white"
-              numberOfLines={4}
-              ref={textRef}
-              onChangeText={(text) => {
-                setBody(text);
-                if (text.length > 0) {
-                  setBtnBackgroundColor(colors.blue);
-                } else {
-                  setBtnBackgroundColor("rgba(29, 155, 240,0.7)");
-                }
+            <View
+              className="grid grid-cols-1 content-center"
+              style={{
+                display: "flex",
+                justifyContent: "center",
               }}
-            />
+            >
+              <Text className="font-bold text-xl">Home</Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <MaterialCommunityIcons
+                name="feather"
+                size={30}
+                color={"rgb(35, 165, 245)"}
+              />
+            </TouchableOpacity>
           </View>
 
-          <View className="items-center vertical-icons">
-            <View className="flex flex-row w-5/6 justify-between mt-2">
-              <View className="flex-row w-1/2 justify-between">
-                <View style={{ display: "flex", justifyContent: "center" }}>
-                  <Icon name="image" color={colors.blue} size={19} />
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View
+              className="items-center w-full  h-full"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <View
+                className="items-center w-11/12 relative text-input bg-white p-3 rounded-lg shadow-lg"
+                style={{ borderWidth: 1, borderColor: "black" }}
+              >
+                <View className="w-full">
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                    }}
+                    className="w-full"
+                  >
+                    <Icon name="close" color={"rgb(29, 155, 240)"} size={26} />
+                  </TouchableOpacity>
+                  <View className="items-center mt-4">
+                    <TextInput
+                      placeholder="What's happening ?"
+                      className="rounded-lg p-2 w-full mb-3"
+                      style={{ borderWidth: 1, borderColor: "black" }}
+                      multiline={true}
+                      numberOfLines={4}
+                      ref={textRef}
+                      onChangeText={(text) => {
+                        setBody(text);
+                        if (text.length > 0) {
+                          setBtnBackgroundColor(colors.blue);
+                        } else {
+                          setBtnBackgroundColor("rgba(29, 155, 240,0.7)");
+                        }
+                      }}
+                    />
+                  </View>
+                  <View className="items-center vertical-icons">
+                    <View className="flex flex-row justify-between w-full">
+                      <View className="flex-row justify-between w-1/2">
+                        <View
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <Icon name="image" color={colors.blue} size={19} />
+                        </View>
+                        <View
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <Icon name="smile-o" color={colors.blue} size={19} />
+                        </View>
+                        <View
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <Foundation
+                            name="graph-horizontal"
+                            color={colors.blue}
+                            size={19}
+                          />
+                        </View>
+                        <View
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <Evil name="location" color={colors.blue} size={19} />
+                        </View>
+                      </View>
+                      <View
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <Text
+                          style={[
+                            styles.btn,
+                            {
+                              backgroundColor: btnBackgroundColor,
+                              borderWidth: 1,
+                              borderColor: btnBackgroundColor,
+                            },
+                          ]}
+                          onPress={createForm}
+                        >
+                          Tweetle
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
                 </View>
-                <View style={{ display: "flex", justifyContent: "center" }}>
-                  <Icon name="smile-o" color={colors.blue} size={19} />
-                </View>
-                <View style={{ display: "flex", justifyContent: "center" }}>
-                  <Foundation
-                    name="graph-horizontal"
-                    color={colors.blue}
-                    size={19}
-                  />
-                </View>
-                <View style={{ display: "flex", justifyContent: "center" }}>
-                  <Evil name="location" color={colors.blue} size={19} />
-                </View>
-              </View>
-              <View style={{ display: "flex", justifyContent: "center" }}>
-                <Text
-                  style={[
-                    styles.btn,
-                    {
-                      backgroundColor: btnBackgroundColor,
-                      borderWidth: 1,
-                      borderColor: btnBackgroundColor,
-                    },
-                  ]}
-                  onPress={createForm}
-                >
-                  Tweetle
-                </Text>
               </View>
             </View>
-          </View>
+          </Modal>
 
           <ScrollView
-            className="h-3/4 mt-8"
+            className="mb-9 border-b border-black"
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >

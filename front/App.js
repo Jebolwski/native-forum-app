@@ -69,8 +69,6 @@ export default function App() {
           <Stack.Navigator
             initialRouteName="Login"
             screenOptions={{
-              headerShown: false,
-              tabBarShowLabel: false,
               tabBarInactiveTintColor: "gray",
               tabBarActiveTintColor: "rgb(245,245,245)",
               headerTitleAlign: "center",
@@ -87,7 +85,13 @@ export default function App() {
               },
             }}
           >
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Home"
+              component={Home}
+            />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />
