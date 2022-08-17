@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  BackHandler,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
@@ -12,6 +13,11 @@ import AuthContext from "../AuthContext";
 const Profile = () => {
   let { user } = useContext(AuthContext);
   const [profile, setProfile] = useState();
+
+  BackHandler.addEventListener("hardwareBackPress", function () {
+    return false;
+  });
+
   let getProfile = async (props) => {
     let response = await fetch(
       `http://192.168.0.11:19002/api/profile/${user.user_id}/`,
@@ -38,7 +44,7 @@ const Profile = () => {
     );
   } else {
     return (
-      <SafeAreaView className="container bg-stone-800 ">
+      <SafeAreaView className="container bg-white">
         <View className="top-div flex flex-row justify-around mt-5">
           <View
             style={{
@@ -46,7 +52,7 @@ const Profile = () => {
               justifyContent: "center",
             }}
           >
-            <Text className="font-bold text-white">{user.username}</Text>
+            <Text className="font-bold ">{user.username}</Text>
           </View>
           <Image
             source={{
@@ -64,24 +70,24 @@ const Profile = () => {
           />
         </View>
         <View className="bio-div p-4">
-          <Text className="text-white">{profile.bio}</Text>
+          <Text className="">{profile.bio}</Text>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity className=" bg-stone-800 px-5 py-2 border-b-2 border-white">
-            <Text className="text-center text-white">Tweetler</Text>
+          <TouchableOpacity className="px-5 py-2 border-b-2 border-white">
+            <Text className="text-center ">Tweetler</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="px-5 py-2 border-b-2 border-white bg-stone-800">
-            <Text className="text-center text-white">Tweetler ve yanıtlar</Text>
+          <TouchableOpacity className="px-5 py-2 border-b-2 border-white">
+            <Text className="text-center ">Tweetler ve yanıtlar</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="px-5 py-2 border-b-2 border-white bg-stone-800">
-            <Text className="text-center text-white">Medya</Text>
+          <TouchableOpacity className="px-5 py-2 border-b-2 border-white">
+            <Text className="text-center ">Medya</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="px-5 py-2 border-b-2 border-white bg-stone-800">
-            <Text className="text-center text-white">Beğeni</Text>
+          <TouchableOpacity className="px-5 py-2 border-b-2 border-white">
+            <Text className="text-center ">Beğeni</Text>
           </TouchableOpacity>
         </ScrollView>
         <View className="bg-dark p-4">
-          <Text className="text-white">Bottom Div</Text>
+          <Text className="">Bottom Div</Text>
         </View>
       </SafeAreaView>
     );

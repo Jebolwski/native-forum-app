@@ -41,7 +41,7 @@ const FormSingle = (props) => {
               {" "}
               @{slugify(props.form.username)}{" "}
             </Text>
-            <Text className="font-light pl-3 "> {props.form.create}</Text>
+            <Text className="font-light pl-3 ">• 17 sa</Text>
           </Text>
           <Entypo
             name="dots-three-horizontal"
@@ -49,9 +49,17 @@ const FormSingle = (props) => {
             onPress={() => {
               deleteForm(props.form.id);
             }}
+            style={{ transform: [{ rotate: "90deg" }], marginTop: 5 }}
           />
         </View>
-        <Text className="mt-3 ">{props.form.body}</Text>
+        <Text
+          className="mt-3"
+          onPress={() => {
+            props.navigation.navigate("Tweet");
+          }}
+        >
+          {props.form.body}
+        </Text>
         <View className="flex-row justify-around mt-4 mb-1">
           <Text>
             <Icon name="comment-o" size={15} color={colors.dark_button} />{" "}
@@ -63,7 +71,14 @@ const FormSingle = (props) => {
           </Text>
           <Text>
             <Icon name="heart-o" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3 ">0</Text>
+            <Text>0</Text>
+          </Text>
+          <Text>
+            <EvilIcon
+              name="share-google"
+              size={15}
+              color={colors.dark_button}
+            />{" "}
           </Text>
         </View>
       </View>

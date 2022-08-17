@@ -9,6 +9,8 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   Modal,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
@@ -126,20 +128,22 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     FormsGel();
   }, []);
+
   BackHandler.addEventListener("hardwareBackPress", function () {
     return true;
   });
+
   if (!profile) {
     return (
-      <View>
-        <Text className="text-center twxt-white">Yükleniyor...</Text>
+      <View className="h-full flex justify-center">
+        <ActivityIndicator size="large" />
       </View>
     );
   } else {
     return (
       <SafeAreaView className="container h-full bg-white">
-        <View className="shadow-sm ">
-          <View className="flex flex-row justify-between px-4 py-3 border-b border-black">
+        <View>
+          <View className="flex flex-row justify-between px-4 py-3 border-b border-gray-300">
             <View
               style={{
                 display: "flex",
@@ -152,7 +156,7 @@ const Home = ({ navigation }) => {
                 }}
               >
                 <Image
-                  className=" w-10 h-10 rounded-full border border-black"
+                  className=" w-8 h-8 rounded-full border border-black"
                   style={{ borderColor: "white", borderWidth: 1 }}
                   source={{
                     uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
@@ -160,29 +164,25 @@ const Home = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <View
+            <TouchableWithoutFeedback
+              onPress={() => {
+                FormsGel();
+              }}
               className="grid grid-cols-1 content-center"
               style={{
                 display: "flex",
                 justifyContent: "center",
               }}
             >
-              <Text className="font-bold text-xl">Home</Text>
-            </View>
+              <Icon name="twitter" size={30} color={colors.blue} />
+            </TouchableWithoutFeedback>
             <TouchableOpacity
               style={{
                 display: "flex",
                 justifyContent: "center",
               }}
-              onPress={() => {
-                setModalVisible(true);
-              }}
             >
-              <MaterialCommunityIcons
-                name="feather"
-                size={30}
-                color={"rgb(35, 165, 245)"}
-              />
+              <Icon name="star-o" size={24} />
             </TouchableOpacity>
           </View>
 
@@ -196,13 +196,10 @@ const Home = ({ navigation }) => {
             }}
           >
             <View
-              className="items-center w-full  h-full"
+              className="items-center w-full  h-full bg-neutral-600"
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <View
-                className="items-center w-11/12 relative text-input bg-white p-3 rounded-lg shadow-lg"
-                style={{ borderWidth: 1, borderColor: "black" }}
-              >
+              <View className="items-center w-full relative text-input bg-white p-3 shadow-2xl h-full">
                 <View className="w-full">
                   <TouchableOpacity
                     onPress={() => {
@@ -212,13 +209,17 @@ const Home = ({ navigation }) => {
                   >
                     <Icon name="close" color={"rgb(29, 155, 240)"} size={26} />
                   </TouchableOpacity>
-                  <View className="items-center mt-4">
+                  <View className="items-center mt-16">
                     <TextInput
                       placeholder="What's happening ?"
                       className="rounded-lg p-2 w-full mb-3"
-                      style={{ borderWidth: 1, borderColor: "black" }}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "black",
+                        minHeight: 100,
+                        textAlignVertical: "top",
+                      }}
                       multiline={true}
-                      numberOfLines={4}
                       ref={textRef}
                       onChangeText={(text) => {
                         setBody(text);
@@ -283,7 +284,7 @@ const Home = ({ navigation }) => {
           </Modal>
 
           <ScrollView
-            className="mb-9 border-b border-black"
+            className="mb-14 border-b border-gray-300"
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
@@ -294,11 +295,38 @@ const Home = ({ navigation }) => {
                   form={form}
                   forms={forms}
                   setForms={setForms}
+                  navigation={navigation}
                 />
               );
             })}
           </ScrollView>
         </View>
+        <TouchableOpacity
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: colors.blue,
+            position: "absolute",
+            borderRadius: 30,
+            bottom: 15,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.36,
+            shadowRadius: 6.68,
+
+            elevation: 11,
+            right: 20,
+            padding: 10,
+          }}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
+          <MaterialCommunityIcons name="feather" size={28} color={"white"} />
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }

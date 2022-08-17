@@ -18,7 +18,7 @@ const BottomNavigator = () => {
   return (
     <View className="w-full">
       {user ? (
-        <View className="flex-row justify-around w-full border border-black p-1">
+        <View className="flex-row justify-around w-full border border-gray-600 p-1">
           <TouchableWithoutFeedback
             onPress={() => {
               navigation.navigate("Home");
@@ -73,21 +73,6 @@ const BottomNavigator = () => {
               }}
             >
               <IonIcons name="mail-outline" size={28} />
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              logoutUser();
-              navigation.navigate("Login");
-            }}
-          >
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <MaterialIcon name="logout" size={28} />
             </View>
           </TouchableWithoutFeedback>
         </View>

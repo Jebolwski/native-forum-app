@@ -10,16 +10,16 @@ const Login = ({ navigation }) => {
 
   return (
     <>
-      <View className="container bg-stone-800 h-full items-center">
+      <View className="container bg-white h-full items-center">
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-14 bg-stone-400 border-2 border-stone-300 "
+          className="px-4 w-2/3 py-1 rounded-lg mt-14 border border-stone-800"
           placeholder="Username"
           onChangeText={(text) => {
             setUsername1(text);
           }}
         />
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-14 bg-stone-400 border-2 border-stone-300 "
+          className="px-4 w-2/3 py-1 rounded-lg mt-14 border border-stone-800"
           secureTextEntry={true}
           onChangeText={(text) => {
             setPassword1(text);
@@ -34,7 +34,7 @@ const Login = ({ navigation }) => {
         >
           <Button
             title="Login"
-            color={"gray"}
+            color={colors.blue}
             onPress={async () => {
               let response = await loginUser(username1, password1);
               if (response === "OK") {

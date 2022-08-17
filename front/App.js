@@ -11,6 +11,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import BottomNavigator from "./components/BottomNavigator";
+import Tweet from "./screens/Tweet";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +63,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={{ padding: 0, margin: 0 }}>
-        <StatusBar backgroundColor="rgb(41, 37, 36)" barStyle="light-content" />
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
       </View>
       <TailwindProvider>
         <AuthProvider>
@@ -92,9 +93,16 @@ export default function App() {
               name="Home"
               component={Home}
             />
-            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Profile"
+              component={Profile}
+            />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Tweet" component={Tweet} />
           </Stack.Navigator>
           <BottomNavigator />
         </AuthProvider>
