@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   BackHandler,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
 
-const Profile = () => {
+const Profile = ({ navigation: { goBack } }) => {
   let { user } = useContext(AuthContext);
   const [profile, setProfile] = useState();
 
@@ -45,6 +46,13 @@ const Profile = () => {
   } else {
     return (
       <SafeAreaView className="container bg-white">
+        <TouchableWithoutFeedback
+          onPress={() => {
+            goBack();
+          }}
+        >
+          <Text>Messi</Text>
+        </TouchableWithoutFeedback>
         <View className="top-div flex flex-row justify-around mt-5">
           <View
             style={{

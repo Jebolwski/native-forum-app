@@ -15,50 +15,6 @@ import Tweet from "./screens/Tweet";
 
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Login"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="HomeStack" component={Home} />
-      <Stack.Screen
-        options={{
-          headerStyle: { display: "none" },
-        }}
-        name="Login"
-        component={Login}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function SettingsStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Settings" component={Settings} />
-    </Stack.Navigator>
-  );
-}
-
-function ProfileStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="ProfileStack" component={Profile} />
-    </Stack.Navigator>
-  );
-}
-
 export default function App() {
   return (
     <NavigationContainer>

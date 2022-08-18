@@ -11,6 +11,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
@@ -29,6 +30,7 @@ const Home = ({ navigation }) => {
   const [forms, setForms] = useState([]);
   const [profile, setProfile] = useState();
   const [body, setBody] = useState();
+  const [sidebar, setSidebar] = useState(-600);
   const [modalVisible, setModalVisible] = useState(false);
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
@@ -124,6 +126,7 @@ const Home = ({ navigation }) => {
   }, [isFocused]);
 
   let textRef = useRef();
+  const animVal = new Animated.Value(-5000);
 
   useEffect(() => {
     FormsGel();
@@ -142,6 +145,122 @@ const Home = ({ navigation }) => {
   } else {
     return (
       <SafeAreaView className="container h-full bg-white">
+        <View
+          className="w-3/4 h-full absolute top-0 left-0 bg-white z-20 px-7 py-5 border flex justify-evenly"
+          style={{
+            left: animVal,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.36,
+            shadowRadius: 6.68,
+
+            elevation: 11,
+          }}
+        >
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
+            <View>
+              <Image
+                source={{
+                  uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                }}
+                className="h-12 w-12 rounded-full"
+                onPress={() => {
+                  navigation.navigate("Profile");
+                }}
+              />
+              <Text className="font-bold text-xl mt-1">{user.username}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Icon name="user-o" size={22} style={{ width: 35 }} />
+              <Text>Profil</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="list-alt" size={22} style={{ width: 35 }} />
+            <Text>Listeler</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Evil name="comment" size={22} style={{ width: 35 }} />
+            <Text>Konular</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="bookmark-o" size={22} style={{ width: 35 }} />
+            <Text>Yer işaretleri</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="user-o" size={22} style={{ width: 35 }} />
+            <Text>An</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="money" size={22} style={{ width: 35 }} />
+            <Text>Gelire dönüştürme</Text>
+          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate("Settings");
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text>Ayarlar ve gizlilik</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+
         <View>
           <View className="flex flex-row justify-between px-4 py-3 border-b border-gray-300">
             <View
@@ -152,7 +271,10 @@ const Home = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Profile");
+                  Animated.timing(animVal, {
+                    toValue: 10,
+                    duration: 1000,
+                  }).start();
                 }}
               >
                 <Image
