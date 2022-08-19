@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   Animated,
+  Easing,
 } from "react-native";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
@@ -126,7 +127,7 @@ const Home = ({ navigation }) => {
   }, [isFocused]);
 
   let textRef = useRef();
-  const animVal = new Animated.Value(-5000);
+  const translation = useRef(new Animated.Value(-600)).current;
 
   useEffect(() => {
     FormsGel();
@@ -145,10 +146,10 @@ const Home = ({ navigation }) => {
   } else {
     return (
       <SafeAreaView className="container h-full bg-white">
-        <View
-          className="w-3/4 h-full absolute top-0 left-0 bg-white z-20 px-7 py-5 border flex justify-evenly"
+        <Animated.View
+          className="w-3/4 h-full absolute top-0 left bg-white z-20 px-7 py-5 border flex justify-evenly"
           style={{
-            left: animVal,
+            transform: [{ translateX: translation }],
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
@@ -156,7 +157,7 @@ const Home = ({ navigation }) => {
             },
             shadowOpacity: 0.36,
             shadowRadius: 6.68,
-
+            zIndex: 30,
             elevation: 11,
           }}
         >
@@ -259,7 +260,30 @@ const Home = ({ navigation }) => {
               <Text>Ayarlar ve gizlilik</Text>
             </View>
           </TouchableWithoutFeedback>
-        </View>
+          <TouchableOpacity
+            onPress={() => {
+              Animated.timing(translation, {
+                toValue: -600,
+                duration: 1000,
+                useNativeDriver: true,
+              }).start();
+            }}
+            className="absolute right-0 bg-blue-400 p-1 rounded-full translate-x-6 z-10"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.36,
+              shadowRadius: 6.68,
+
+              elevation: 11,
+            }}
+          >
+            <Evil name="chevron-left" color={"white"} size={35} />
+          </TouchableOpacity>
+        </Animated.View>
 
         <View>
           <View className="flex flex-row justify-between px-4 py-3 border-b border-gray-300">
@@ -271,9 +295,10 @@ const Home = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  Animated.timing(animVal, {
-                    toValue: 10,
-                    duration: 1000,
+                  Animated.timing(translation, {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: true,
                   }).start();
                 }}
               >

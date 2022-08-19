@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
+import Icon from "react-native-vector-icons/EvilIcons";
 
 const Profile = ({ navigation: { goBack } }) => {
   let { user } = useContext(AuthContext);
@@ -51,7 +52,11 @@ const Profile = ({ navigation: { goBack } }) => {
             goBack();
           }}
         >
-          <Text>Messi</Text>
+          <View className="p-3">
+            <View className=" bg-slate-200 w-7 h-7 border rounded-full flex justify-center">
+              <Icon name="chevron-left" size={26} />
+            </View>
+          </View>
         </TouchableWithoutFeedback>
         <View className="top-div flex flex-row justify-around mt-5">
           <View
@@ -78,7 +83,7 @@ const Profile = ({ navigation: { goBack } }) => {
           />
         </View>
         <View className="bio-div p-4">
-          <Text className="">{profile.bio}</Text>
+          <Text>{profile.bio}</Text>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <TouchableOpacity className="px-5 py-2 border-b-2 border-white">

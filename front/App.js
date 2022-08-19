@@ -27,6 +27,7 @@ export default function App() {
             initialRouteName="Login"
             screenOptions={{
               tabBarInactiveTintColor: "gray",
+              headerShown: false,
               tabBarActiveTintColor: "rgb(245,245,245)",
               headerTitleAlign: "center",
               headerShadowVisible: true,
@@ -42,20 +43,8 @@ export default function App() {
               },
             }}
           >
-            <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Home"
-              component={Home}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Profile"
-              component={Profile}
-            />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Tweet" component={Tweet} />

@@ -1,10 +1,24 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableWithoutFeedback } from "react-native";
 import React from "react";
+import Icon from "react-native-vector-icons/EvilIcons";
 
-const Settings = () => {
+const Settings = ({ navigation: { goBack } }) => {
   return (
-    <View className="bg-stone-800 h-full">
-      <Text className="text-white text-center">Settings</Text>
+    <View className=" h-full">
+      <View className="p-3">
+        <TouchableWithoutFeedback
+          onPress={() => {
+            goBack();
+          }}
+        >
+          <View className="p-3">
+            <View className=" bg-slate-200 w-7 h-7 border rounded-full flex justify-center">
+              <Icon name="chevron-left" size={26} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      <Text className="text-center">Settings</Text>
     </View>
   );
 };

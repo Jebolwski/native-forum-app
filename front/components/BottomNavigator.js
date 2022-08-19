@@ -9,6 +9,7 @@ import AuthContext from "../AuthContext";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 
 const BottomNavigator = () => {
@@ -30,7 +31,7 @@ const BottomNavigator = () => {
                 justifyContent: "center",
               }}
             >
-              <Icon name="home" size={28} />
+              <Feather name="home" size={28} />
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
