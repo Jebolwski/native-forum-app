@@ -22,6 +22,7 @@ import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Evil from "react-native-vector-icons/EvilIcons";
 import Foundation from "react-native-vector-icons/Foundation";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { colors } from "../colors/colors";
@@ -338,7 +339,6 @@ const Home = ({ navigation }) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >
@@ -348,21 +348,48 @@ const Home = ({ navigation }) => {
             >
               <View className="items-center w-full relative text-input bg-white p-3 shadow-2xl h-full">
                 <View className="w-full">
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalVisible(false);
-                    }}
-                    className="w-full"
-                  >
-                    <Icon name="close" color={"rgb(29, 155, 240)"} size={26} />
-                  </TouchableOpacity>
-                  <View className="items-center mt-16">
+                  <View className="flex-row justify-between">
+                    <TouchableOpacity
+                      onPress={() => {
+                        setModalVisible(false);
+                      }}
+                      className="flex justify-center"
+                    >
+                      <AntDesign name="close" size={26} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={createForm}>
+                      <View
+                        className="p-2 rounded-2xl"
+                        style={[
+                          styles.btn,
+                          {
+                            backgroundColor: btnBackgroundColor,
+                            borderWidth: 1,
+                            borderColor: btnBackgroundColor,
+                          },
+                        ]}
+                      >
+                        <Text className="text-white">Tweetle</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View className="flex-row mt-5">
+                    <View>
+                      <Image
+                        source={{
+                          uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                        }}
+                        className="h-12 w-12 rounded-full"
+                        onPress={() => {
+                          navigation.navigate("Profile");
+                        }}
+                      />
+                    </View>
                     <TextInput
                       placeholder="What's happening ?"
-                      className="rounded-lg p-2 w-full mb-3"
+                      className="rounded-lg p-2 w-5/6 mb-3 ml-3"
                       style={{
-                        borderWidth: 1,
-                        borderColor: "black",
                         minHeight: 100,
                         textAlignVertical: "top",
                       }}
@@ -378,51 +405,24 @@ const Home = ({ navigation }) => {
                       }}
                     />
                   </View>
-                  <View className="items-center vertical-icons">
-                    <View className="flex flex-row justify-between w-full">
-                      <View className="flex-row justify-between w-1/2">
-                        <View
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <Icon name="image" color={colors.blue} size={19} />
-                        </View>
-                        <View
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <Icon name="smile-o" color={colors.blue} size={19} />
-                        </View>
-                        <View
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <Foundation
-                            name="graph-horizontal"
-                            color={colors.blue}
-                            size={19}
-                          />
-                        </View>
-                        <View
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <Evil name="location" color={colors.blue} size={19} />
-                        </View>
-                      </View>
-                      <View
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <Text
-                          style={[
-                            styles.btn,
-                            {
-                              backgroundColor: btnBackgroundColor,
-                              borderWidth: 1,
-                              borderColor: btnBackgroundColor,
-                            },
-                          ]}
-                          onPress={createForm}
-                        >
-                          Tweetle
-                        </Text>
-                      </View>
+                </View>
+                <View className="absolute bottom-0 left-0 w-full p-3 vertical-icons flex ml-3">
+                  <View className="flex-row justify-between">
+                    <View style={{ display: "flex", justifyContent: "center" }}>
+                      <Icon name="image" color={colors.blue} size={19} />
+                    </View>
+                    <View style={{ display: "flex", justifyContent: "center" }}>
+                      <Icon name="smile-o" color={colors.blue} size={19} />
+                    </View>
+                    <View style={{ display: "flex", justifyContent: "center" }}>
+                      <Foundation
+                        name="graph-horizontal"
+                        color={colors.blue}
+                        size={19}
+                      />
+                    </View>
+                    <View style={{ display: "flex", justifyContent: "center" }}>
+                      <Evil name="location" color={colors.blue} size={19} />
                     </View>
                   </View>
                 </View>

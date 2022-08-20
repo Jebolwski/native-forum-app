@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
     bio = models.TextField(max_length=160,null=False,blank=False,default="No info was given.")
-    profile_pic = models.ImageField(default="default_pp.png",null=True,blank=True)
+    profile_pic = models.ImageField(default="default_pp.png",upload_to="profile_pic",null=True,blank=True)
+    background_pic = models.ImageField(default="default_bgp.png",upload_to="background_pic",null=True,blank=True)
     followers = models.ManyToManyField("self",related_name="profile_followers",blank=True)
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)

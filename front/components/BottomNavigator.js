@@ -34,11 +34,7 @@ const BottomNavigator = () => {
               <Feather name="home" size={28} />
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              navigation.navigate("Settings");
-            }}
-          >
+          <TouchableWithoutFeedback onPress={() => {}}>
             <View
               style={{
                 display: "flex",

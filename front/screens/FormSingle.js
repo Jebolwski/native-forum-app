@@ -31,7 +31,6 @@ const FormSingle = (props) => {
         className="p-2 w-full shadow-md"
         style={{
           borderColor: "white",
-          borderBottomWidth: 1,
         }}
       >
         <View className="flex-row justify-between">
