@@ -26,7 +26,7 @@ const FormSingle = (props) => {
     }
   };
   return (
-    <View className="items-center w-full border-t ">
+    <View className="items-center w-full border-b ">
       <View
         className="p-2 w-full shadow-md"
         style={{

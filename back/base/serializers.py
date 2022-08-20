@@ -13,12 +13,8 @@ class FormSerializer(ModelSerializer):
         fields      = "__all__"
 
     def get_username(self,form):
-        username = Form.objects.get(id=form.id).user.username
+        username = Form.objects.get(id=form.id).profile.user.username
         return username
-
-    def get_timesince(self,form):
-        time = Form.objects.get(id=form.id).edit.strftime("%d %B %Y")
-        return time
 
     def get_id(self,form):
         id = Form.objects.get(id=form.id).id
