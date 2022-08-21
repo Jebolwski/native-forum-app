@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
@@ -66,3 +67,18 @@ def ProfileForms(request,pk):
     forms = Form.objects.filter(profile=profile).order_by("-edit")
     serializer = FormSerializer(forms, many=True)
     return Response(serializer.data)
+
+
+#!Getting forms of a specific profile.
+@api_view(['POST','PUT'])
+def EditProfile(request,pk):
+    profile = Profile.objects.get(id=pk)
+    if request.method=="PUT":
+        if request.data.get("pp_mi")=="1":
+            profile.profile_pic = request.data.get('photo')
+            profile.save()
+        elif request.data.get("pp_mi")=="0":
+            profile.background_pic = request.data.get('photo')
+            profile.save()
+        return Response("Messi")
+    return Response("Put değil")

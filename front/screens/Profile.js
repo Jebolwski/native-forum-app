@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   Animated,
+  Modal,
 } from "react-native";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import AuthContext from "../AuthContext";
@@ -16,6 +17,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/FontAwesome";
 import FormSingle from "./FormSingle";
 import { colors } from "../colors/colors";
+import { useIsFocused } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 
 const Profile = ({ navigation }) => {
   let { user } = useContext(AuthContext);
@@ -27,6 +30,10 @@ const Profile = ({ navigation }) => {
   const [tweetlerWidth, setTweetlerWidth] = useState(2);
   const [tweetlerveyanitlarWidth, setTweetlerveyanitlarWidth] = useState(0);
   const [medyaWidth, setMedyaWidth] = useState(0);
+  const [modalPPVisible, setModalPPVisible] = useState(false);
+  const [modalBPVisible, setModalBPVisible] = useState(false);
+  const [image, setImage] = useState();
+  const [result, setResult] = useState();
 
   const translation = useRef(new Animated.Value(1)).current;
 
@@ -66,10 +73,12 @@ const Profile = ({ navigation }) => {
       setProfile(data);
     }
   };
+
   useEffect(() => {
     getProfile();
     getProfilesForms();
-  }, []);
+  }, [isFocused]);
+
   let tweetlerRef = useRef();
   let begeniRef = useRef();
   let tweetlerveyanitlarRef = useRef();
@@ -77,6 +86,58 @@ const Profile = ({ navigation }) => {
 
   const [finalState, setFinalState] = useState([]);
 
+  const isFocused = useIsFocused();
+
+  const upload = async () => {
+    const result = await launchCamera(options);
+  };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    setResult(result);
+    var formdata = new FormData();
+    formdata.append("photo", result.uri);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+  let duzenle = async (a) => {
+    var formdata = new FormData();
+    if (image != null) {
+      formdata.append("photo", {
+        name: new Date() + "_profile",
+        uri: image,
+        type: "image/jpg",
+      });
+      formdata.append("pp_mi", a);
+    }
+
+    var requestOptions = {
+      method: "PUT",
+      body: formdata,
+      credentials: "same-origin",
+    };
+    let response = await fetch(
+      `http://192.168.0.11:19002/api/profile/${profile.id}/edit/`,
+      requestOptions
+    );
+    if (response.status === 200) {
+      setModalBPVisible(false);
+      setModalPPVisible(false);
+      getProfile();
+    }
+    // .then((response) => console.log(response.text()))
+    // .then(() => {
+    //   navigation.navigate("Home");
+    // })
+    // .catch((error) => console.log("error", error));
+  };
   if (profile && finalState) {
     return (
       <SafeAreaView className="container bg-white h-full">
@@ -93,34 +154,47 @@ const Profile = ({ navigation }) => {
             <AntDesign name="arrowleft" size={26} color="white" />
           </View>
         </TouchableWithoutFeedback>
-        <View className="background-image h-1/3 max-h-32">
-          <Image
-            source={{
-              uri: `http://192.168.0.11:19002/api/background_pic/${profile.background_pic}`,
-            }}
-            className="w-full h-full"
-          />
-        </View>
+
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModalBPVisible(true);
+          }}
+        >
+          <View className="background-image h-1/3 max-h-32">
+            <Image
+              source={{
+                uri: `http://192.168.0.11:19002/api${profile.background_pic}`,
+              }}
+              className="w-full h-full"
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <View
           className="top-div justify-around relative bg-white"
           style={{ minHeight: 50 }}
         >
-          <View className="absolute left-4" style={{ top: -35 }}>
-            <Image
-              source={{
-                uri: `http://192.168.0.11:19002/api/${profile.profile_pic}`,
-              }}
-              style={{
-                width: 70,
-                height: 70,
-                borderRadius: 35,
-                display: "flex",
-                alignContent: "center",
-                borderWidth: 2,
-                borderColor: "white",
-              }}
-            />
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setModalPPVisible(true);
+            }}
+          >
+            <View className="absolute left-4" style={{ top: -35 }}>
+              <Image
+                source={{
+                  uri: `http://192.168.0.11:19002/api/${profile.profile_pic}`,
+                }}
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderRadius: 35,
+                  display: "flex",
+                  alignContent: "center",
+                  borderWidth: 2,
+                  borderColor: "white",
+                }}
+              />
+            </View>
+          </TouchableWithoutFeedback>
           <View
             style={{
               display: "flex",
@@ -200,6 +274,162 @@ const Profile = ({ navigation }) => {
             );
           })}
         </ScrollView>
+
+        {/* Profile pic modal */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalPPVisible}
+          onRequestClose={() => {
+            setModalPPVisible(!modalPPVisible);
+          }}
+        >
+          <View className="w-full h-full bg-white">
+            <View className="flex-row p-3 absolute">
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setModalPPVisible(false);
+                }}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <AntDesign name="arrowleft" size={26} className="font-bold" />
+              </TouchableWithoutFeedback>
+            </View>
+            <View
+              className="h-full"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {image ? (
+                <Image
+                  source={{
+                    uri: image,
+                  }}
+                  className="w-full h-1/2"
+                />
+              ) : (
+                <Image
+                  source={{
+                    uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                  }}
+                  className="w-full h-1/2"
+                />
+              )}
+            </View>
+            <View className="items-center">
+              {image ? (
+                <View className="flex-row w-full bottom-10 absolute justify-evenly">
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImage();
+                    }}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Kaldır</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={pickImage}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Düzenle</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      duzenle("1");
+                    }}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Kaydet</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={pickImage}
+                  className="absolute bottom-10 justify-center border rounded-xl px-4 py-1"
+                >
+                  <Text>Düzenle</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </Modal>
+
+        {/* Background pic modal */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalBPVisible}
+          onRequestClose={() => {
+            setModalPPVisible(!modalBPVisible);
+          }}
+        >
+          <View className="w-full h-full bg-white">
+            <View className="flex-row p-3 absolute">
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setModalBPVisible(false);
+                }}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <AntDesign name="arrowleft" size={26} className="font-bold" />
+              </TouchableWithoutFeedback>
+            </View>
+            <View
+              className="h-full"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {image ? (
+                <Image
+                  source={{
+                    uri: image,
+                  }}
+                  className="w-full h-1/2"
+                />
+              ) : (
+                <Image
+                  source={{
+                    uri: `http://192.168.0.11:19002/api${profile.background_pic}`,
+                  }}
+                  className="w-full h-1/2"
+                />
+              )}
+            </View>
+            <View className="items-center">
+              {image ? (
+                <View className="flex-row w-full bottom-10 absolute justify-evenly">
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImage();
+                    }}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Kaldır</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={pickImage}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Düzenle</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      duzenle("0");
+                    }}
+                    className="justify-center border rounded-xl px-4 py-1"
+                  >
+                    <Text>Kaydet</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={pickImage}
+                  className="absolute bottom-10 justify-center border rounded-xl px-4 py-1"
+                >
+                  <Text>Düzenle</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     );
   } else {
