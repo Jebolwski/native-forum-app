@@ -24,7 +24,7 @@ const Profile = ({ navigation }) => {
   const [profilesFormsWithImages, setProfilesFormsWithImages] = useState([]);
   const [profilesLikeds, setProfilesLikeds] = useState([]);
   const [begeniWidth, setBegeniWidth] = useState(0);
-  const [tweetlerWidth, setTweetlerWidth] = useState(1);
+  const [tweetlerWidth, setTweetlerWidth] = useState(2);
   const [tweetlerveyanitlarWidth, setTweetlerveyanitlarWidth] = useState(0);
   const [medyaWidth, setMedyaWidth] = useState(0);
 
@@ -131,11 +131,11 @@ const Profile = ({ navigation }) => {
               {user.username}
             </Text>
           </View>
-          <View className="flex-row absolute right-1 top-3 w-1/3 justify-around">
+          <View className="flex-row absolute right-4 top-3 w-1/3 justify-around">
             <View className="border border-gray-300 rounded-full p-1">
               <Icon name="bell-o" size={15} />
             </View>
-            <View className="border border-gray-300 rounded-2xl p-1">
+            <View className="border border-gray-300 rounded-2xl p-1 ml-4">
               <Text>Takip Ediliyor</Text>
             </View>
           </View>

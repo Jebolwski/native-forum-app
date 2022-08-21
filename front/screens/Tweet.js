@@ -1,14 +1,16 @@
-import { View, Text, TouchableWithoutFeedback } from "react-native";
+import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
 import React from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-const Tweet = ({ navigation: { goBack } }) => {
+const Tweet = ({ navigation, route }) => {
+  let form = route.params.form;
+  console.log(form);
   return (
     <View className="m-0 p-0 h-full bg-white">
-      <View className="flex-row p-3 border-b border-b-slate-400">
+      <View className="flex-row p-3 border-b border-gray-400">
         <TouchableWithoutFeedback
           onPress={() => {
-            goBack();
+            navigation.goBack();
           }}
           style={{ display: "flex", justifyContent: "center" }}
         >
@@ -19,6 +21,42 @@ const Tweet = ({ navigation: { goBack } }) => {
           className="ml-5"
         >
           <Text className="text-xl">Tweet</Text>
+        </View>
+      </View>
+      <View className="p-3 flex-row">
+        <View className="flex justify-center">
+          <Image
+            source={{
+              uri: `http://192.168.0.11:19002/api${form.profileObj.profile_pic}`,
+            }}
+            className="h-9 w-9 border rounded-full"
+          />
+        </View>
+        <View className="ml-5">
+          <Text className="font-bold text-lg">{form.username}</Text>
+          <Text className="text-gray-700 font-light">
+            @{form.username.toLowerCase()}
+          </Text>
+        </View>
+      </View>
+      <View className="p-3 pb-1 border-b border-gray-600">
+        <Text className="text-xl">{form.body}</Text>
+        <View className="py-3">
+          <Text>{form.create}</Text>
+        </View>
+      </View>
+      <View className="flex-row justify-around py-3 border-b border-gray-600">
+        <View className="flex-row">
+          <Text className="font-extrabold">126</Text>
+          <Text className="ml-2">Retweet</Text>
+        </View>
+        <View className="flex-row">
+          <Text className="font-extrabold">10</Text>
+          <Text className="ml-2">Quote Tweets</Text>
+        </View>
+        <View className="flex-row">
+          <Text className="font-extrabold">1.902</Text>
+          <Text className="ml-2">Likes</Text>
         </View>
       </View>
     </View>

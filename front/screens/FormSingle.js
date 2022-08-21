@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -53,16 +53,21 @@ const FormSingle = (props) => {
         </View>
         <Text
           className="mt-3"
+          useRef={props.formUserRef}
           onPress={() => {
-            props.navigation.navigate("Tweet");
+            props.navigation.navigate("Tweet", { form: props.form });
           }}
         >
           {props.form.body}
         </Text>
         <View className="flex-row justify-around mt-4 mb-1">
-          <Text>
+          <Text
+            onPress={() => {
+              props.setAnswermodalVisible(true);
+            }}
+          >
             <Icon name="comment-o" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3 ">0</Text>
+            <Text className="ml-3">0</Text>
           </Text>
           <Text>
             <AntDesign name="retweet" size={15} color={colors.dark_button} />{" "}
@@ -75,7 +80,7 @@ const FormSingle = (props) => {
           <Text>
             <EvilIcon
               name="share-google"
-              size={15}
+              size={22}
               color={colors.dark_button}
             />{" "}
           </Text>

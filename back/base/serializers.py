@@ -1,13 +1,22 @@
 from dataclasses import field
+import json
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from django.contrib.auth.models import User
 from .models import Form, Profile
-from datetime import datetime 
+from django.core.serializers import serialize
 
 
+
+
+class ProfileSerializer(ModelSerializer):
+    class Meta:
+        model       = Profile
+        fields      = "__all__"
+        
+        
 class FormSerializer(ModelSerializer):
     username = serializers.SerializerMethodField('get_username')
+    profileObj = serializers.SerializerMethodField('get_profile')
     class Meta:
         model       = Form
         fields      = "__all__"
@@ -16,12 +25,12 @@ class FormSerializer(ModelSerializer):
         username = Form.objects.get(id=form.id).profile.user.username
         return username
 
+    
+
+    def get_profile(self, form):
+       profile = Form.objects.get(id=form.id).profile
+       return ProfileSerializer(profile, many=False).data
+
     def get_id(self,form):
         id = Form.objects.get(id=form.id).id
         return id
-
-
-class ProfileSerializer(ModelSerializer):
-    class Meta:
-        model       = Profile
-        fields      = "__all__"

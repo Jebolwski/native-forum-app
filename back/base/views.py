@@ -29,6 +29,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #!Creating a form.
 @api_view(['GET','POST'])
 def CreateForm(request):
+    print(request.POST)
     serializer = FormSerializer(data = request.data, many=False)
     if serializer.is_valid():
         serializer.save()
@@ -63,6 +64,5 @@ def GetProfile(request,pk):
 def ProfileForms(request,pk):
     profile = Profile.objects.get(user=User.objects.get(id=pk))
     forms = Form.objects.filter(profile=profile).order_by("-edit")
-    print(forms)
     serializer = FormSerializer(forms, many=True)
     return Response(serializer.data)
