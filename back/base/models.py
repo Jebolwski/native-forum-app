@@ -8,8 +8,8 @@ import mptt
 class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
     bio = models.TextField(max_length=160,null=False,blank=False,default="No info was given.")
-    profile_pic = models.ImageField(default="default_pp.png",upload_to="profile_pic",null=True,blank=True)
-    background_pic = models.ImageField(default="default_bgp.png",upload_to="background_pic",null=True,blank=True)
+    profile_pic = models.ImageField(default="profile_pic/default_pp.png",upload_to="profile_pic",null=True,blank=True)
+    background_pic = models.ImageField(default="background_pic/default_bgp.png",upload_to="background_pic",null=True,blank=True)
     followers = models.ManyToManyField("self",related_name="profile_followers",blank=True)
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)
@@ -30,15 +30,13 @@ class Form(models.Model):
     def __str__(self):
         return self.profile.user.username + " ---------- " + self.body
 
-
-
-
 class FormAnswer(MPTTModel):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE,null=False,blank=False)
+    form = models.ForeignKey(Form,on_delete=models.CASCADE,null=False,blank=False)
     body = models.TextField(max_length=160,null=False,blank=False)
     parent = TreeForeignKey('self', on_delete = models.CASCADE, null=True, blank=True, related_name='Children')
     image = models.ImageField(upload_to="profilePhotos",null=False,blank=False,default="default.jpg")
-    formanswerlike = models.ManyToManyField(Profile,null=True,related_name='form_answer_like')
+    formanswerlike = models.ManyToManyField(Profile,null=True,blank=True,related_name='form_answer_like')
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)
 

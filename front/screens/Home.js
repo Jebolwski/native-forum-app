@@ -141,7 +141,6 @@ const Home = ({ navigation }) => {
   BackHandler.addEventListener("hardwareBackPress", function () {
     return true;
   });
-
   if (!profile) {
     return (
       <View className="h-full flex justify-center">

@@ -8,6 +8,9 @@ import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 
 const FormSingle = (props) => {
+  console.log("=============");
+  console.log(props.forms);
+  console.log("=============");
   const deleteForm = async (id) => {
     let response = await fetch(
       `http://192.168.0.11:19002/api/form/${id}/delete/`,
@@ -67,7 +70,7 @@ const FormSingle = (props) => {
             }}
           >
             <Icon name="comment-o" size={15} color={colors.dark_button} />{" "}
-            <Text className="ml-3">0</Text>
+            <Text className="ml-3">{props.form.answer_count}</Text>
           </Text>
           <Text>
             <AntDesign name="retweet" size={15} color={colors.dark_button} />{" "}
@@ -75,7 +78,7 @@ const FormSingle = (props) => {
           </Text>
           <Text>
             <Icon name="heart-o" size={15} color={colors.dark_button} />{" "}
-            <Text>0</Text>
+            <Text>{props.form.like[0]}</Text>
           </Text>
           <Text>
             <EvilIcon

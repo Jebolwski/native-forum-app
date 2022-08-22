@@ -91,11 +91,11 @@ const Profile = ({ navigation }) => {
   const upload = async () => {
     const result = await launchCamera(options);
   };
-  const pickImage = async () => {
+  const pickImage = async (a, b) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [a, b],
       quality: 1,
     });
 
@@ -327,7 +327,9 @@ const Profile = ({ navigation }) => {
                     <Text>Kaldır</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={pickImage}
+                    onPress={() => {
+                      pickImage(3, 3);
+                    }}
                     className="justify-center border rounded-xl px-4 py-1"
                   >
                     <Text>Düzenle</Text>
@@ -343,7 +345,9 @@ const Profile = ({ navigation }) => {
                 </View>
               ) : (
                 <TouchableOpacity
-                  onPress={pickImage}
+                  onPress={() => {
+                    pickImage(3, 3);
+                  }}
                   className="absolute bottom-10 justify-center border rounded-xl px-4 py-1"
                 >
                   <Text>Düzenle</Text>
@@ -405,7 +409,9 @@ const Profile = ({ navigation }) => {
                     <Text>Kaldır</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={pickImage}
+                    onPress={() => {
+                      pickImage(16, 9);
+                    }}
                     className="justify-center border rounded-xl px-4 py-1"
                   >
                     <Text>Düzenle</Text>
@@ -421,7 +427,9 @@ const Profile = ({ navigation }) => {
                 </View>
               ) : (
                 <TouchableOpacity
-                  onPress={pickImage}
+                  onPress={() => {
+                    pickImage(16, 9);
+                  }}
                   className="absolute bottom-10 justify-center border rounded-xl px-4 py-1"
                 >
                   <Text>Düzenle</Text>
