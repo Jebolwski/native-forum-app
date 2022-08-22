@@ -8,9 +8,6 @@ import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 
 const FormSingle = (props) => {
-  console.log("=============");
-  console.log(props.forms);
-  console.log("=============");
   const deleteForm = async (id) => {
     let response = await fetch(
       `http://192.168.0.11:19002/api/form/${id}/delete/`,

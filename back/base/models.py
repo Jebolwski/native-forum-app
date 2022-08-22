@@ -8,8 +8,8 @@ import mptt
 class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
     bio = models.TextField(max_length=160,null=False,blank=False,default="No info was given.")
-    profile_pic = models.ImageField(default="profile_pic/default_pp.png",upload_to="profile_pic",null=True,blank=True)
-    background_pic = models.ImageField(default="background_pic/default_bgp.png",upload_to="background_pic",null=True,blank=True)
+    profile_pic = models.ImageField(default="profile_pic/default_pp.png",upload_to="profile_pic",null=False,blank=False)
+    background_pic = models.ImageField(default="background_pic/default_bgp.png",upload_to="background_pic",null=False,blank=False)
     followers = models.ManyToManyField("self",related_name="profile_followers",blank=True)
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)
