@@ -138,7 +138,6 @@ const Profile = ({ navigation }) => {
     // })
     // .catch((error) => console.log("error", error));
   };
-  console.log(profile);
   if (profile && finalState) {
     return (
       <SafeAreaView className="container bg-white h-full">

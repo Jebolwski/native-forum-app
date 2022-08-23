@@ -41,8 +41,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   let logoutUser = () => {
-    setAuthTokens(null);
-    setUser(null);
     AsyncStorage.removeItem("authTokens");
     AsyncStorage.removeItem("user");
     return "a";

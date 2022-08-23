@@ -22,4 +22,6 @@ urlpatterns = [
     path('profile/<int:pk>/forms/', views.ProfileForms, name='profile-forms'),
     path('profile/<int:pk>/edit/', views.EditProfile, name='profile-forms'),
 
+    path('form/<int:pk>/like/dislike/', views.LikeDislikeForm, name='like-dislike-form'),
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

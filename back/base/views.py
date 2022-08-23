@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from .models import Form, Profile
 from .serializers import FormSerializer, ProfileSerializer
 from django.shortcuts import get_object_or_404
- 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -30,7 +29,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #!Creating a form.
 @api_view(['GET','POST'])
 def CreateForm(request):
-    print(request.POST)
     serializer = FormSerializer(data = request.data, many=False)
     if serializer.is_valid():
         serializer.save()
@@ -82,3 +80,19 @@ def EditProfile(request,pk):
             profile.save()
         return Response("Messi")
     return Response("Put değil")
+
+
+#!Like / Dislike a specific form.
+@api_view(['POST'])
+def LikeDislikeForm(request,pk):
+    form = Form.objects.get(id=pk)
+    user = request.data.get("user_id")
+    profile = Profile.objects.get(user=user)
+    if not profile in form.like.all():
+        form.like.add(profile)
+        return Response(len(form.like.all()))
+    else:
+        form.like.remove(profile)
+        return Response(len(form.like.all()))
+    return Response("assad")
+    

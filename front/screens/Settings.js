@@ -4,16 +4,16 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AuthContext from "../AuthContext";
 import { TextInput } from "react-native-gesture-handler";
-
-const Settings = ({ navigation: { goBack } }) => {
+const Settings = ({ navigation }) => {
   let { user } = useContext(AuthContext);
+  let { logoutUser } = useContext(AuthContext);
   return (
     <View className="h-full bg-white">
       <View className="flex-row p-3 border-b border-b-slate-400">
         <View className=" flex justify-center">
           <TouchableWithoutFeedback
             onPress={() => {
-              goBack();
+              navigation.goBack();
             }}
           >
             <AntDesign name="arrowleft" size={26} className="font-bold" />
@@ -99,20 +99,29 @@ const Settings = ({ navigation: { goBack } }) => {
             </Text>
           </View>
         </View>
-        <View className="flex-row p-3 w-11/12 text-center">
-          <View className="w-10 flex justify-center">
-            <AntDesign name="lock" size={26} />
+        <TouchableWithoutFeedback
+          onPress={async () => {
+            let a = await logoutUser();
+            if (a == "a") {
+              navigation.navigate("Login");
+            }
+          }}
+        >
+          <View className="flex-row p-3 w-11/12 text-center">
+            <View className="w-10 flex justify-center">
+              <AntDesign name="lock" size={26} />
+            </View>
+            <View>
+              <Text className="font-bold text-lg">
+                Erişilebilirlik, ekran ve diller
+              </Text>
+              <Text className="mt-1 text-gray-800">
+                Hesabın hakkındaki bilgileri gör, verilerinin arşivini indir
+                veya hesap devre dışı bırakma seçeneklerin hakkında bilgi edin.
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text className="font-bold text-lg">
-              Erişilebilirlik, ekran ve diller
-            </Text>
-            <Text className="mt-1 text-gray-800">
-              Hesabın hakkındaki bilgileri gör, verilerinin arşivini indir veya
-              hesap devre dışı bırakma seçeneklerin hakkında bilgi edin.
-            </Text>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </ScrollView>
     </View>
   );
