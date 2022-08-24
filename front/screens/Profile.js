@@ -21,7 +21,7 @@ import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 
 const Profile = ({ navigation }) => {
-  let { user } = useContext(AuthContext);
+  let { user, urlBase } = useContext(AuthContext);
   const [profile, setProfile] = useState();
   const [profilesForm, setProfilesForm] = useState([]);
   const [profilesFormsWithImages, setProfilesFormsWithImages] = useState([]);
@@ -43,7 +43,7 @@ const Profile = ({ navigation }) => {
 
   let getProfilesForms = async () => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${user.user_id}/forms/`,
+      `http://${urlBase}/api/profile/${user.user_id}/forms/`,
       {
         method: "GET",
         headers: {
@@ -60,7 +60,7 @@ const Profile = ({ navigation }) => {
 
   let getProfile = async () => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${user.user_id}/`,
+      `http://${urlBase}/api/profile/${user.user_id}/`,
       {
         method: "GET",
         headers: {
@@ -124,7 +124,7 @@ const Profile = ({ navigation }) => {
       credentials: "same-origin",
     };
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${profile.id}/edit/`,
+      `http://${urlBase}/api/profile/${profile.id}/edit/`,
       requestOptions
     );
     if (response.status === 200) {
@@ -132,11 +132,6 @@ const Profile = ({ navigation }) => {
       setModalPPVisible(false);
       getProfile();
     }
-    // .then((response) => console.log(response.text()))
-    // .then(() => {
-    //   navigation.navigate("Home");
-    // })
-    // .catch((error) => console.log("error", error));
   };
   if (profile && finalState) {
     return (
@@ -163,7 +158,7 @@ const Profile = ({ navigation }) => {
           <View className="background-image h-1/3 max-h-32">
             <Image
               source={{
-                uri: `http://192.168.0.11:19002/api${profile.background_pic}`,
+                uri: `http://${urlBase}/api${profile.background_pic}`,
               }}
               className="w-full h-full"
             />
@@ -181,7 +176,7 @@ const Profile = ({ navigation }) => {
             <View className="absolute left-4" style={{ top: -35 }}>
               <Image
                 source={{
-                  uri: `http://192.168.0.11:19002/api/${profile.profile_pic}`,
+                  uri: `http://${urlBase}/api/${profile.profile_pic}`,
                 }}
                 style={{
                   width: 70,
@@ -309,7 +304,7 @@ const Profile = ({ navigation }) => {
               ) : (
                 <Image
                   source={{
-                    uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                    uri: `http://${urlBase}/api${profile.profile_pic}`,
                   }}
                   className="w-full h-1/2"
                 />
@@ -391,7 +386,7 @@ const Profile = ({ navigation }) => {
               ) : (
                 <Image
                   source={{
-                    uri: `http://192.168.0.11:19002/api${profile.background_pic}`,
+                    uri: `http://${urlBase}/api${profile.background_pic}`,
                   }}
                   className="w-full h-1/2"
                 />

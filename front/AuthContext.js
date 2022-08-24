@@ -18,9 +18,9 @@ export const AuthProvider = ({ children }) => {
   let [user, setUser] = useState(async () =>
     AsyncStorage.getItem("user") ? await AsyncStorage.getItem("user") : null
   );
-
+  let urlBase = "192.168.0.11:19002";
   let loginUser = async (username1, password1) => {
-    let response = await fetch("http://192.168.0.11:19002/api/token/", {
+    let response = await fetch(`http://${urlBase}/api/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   let updateToken = async () => {
-    let response = await fetch("http://192.168.0.11:19002/api/token/refresh/", {
+    let response = await fetch(`http://${urlBase}/api/token/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   let registerUser = async (e) => {
     e.preventDefault();
 
-    let response = await fetch("http://192.168.0.11:19002/api/kayit-ol/", {
+    let response = await fetch(`http://${urlBase}/api/kayit-ol/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -126,6 +126,7 @@ export const AuthProvider = ({ children }) => {
     loginUser: loginUser,
     logoutUser: logoutUser,
     registerUser: registerUser,
+    urlBase: urlBase,
   };
 
   return (

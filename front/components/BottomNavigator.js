@@ -18,7 +18,7 @@ const BottomNavigator = () => {
   const navigation = useNavigation();
   return (
     <View className="w-full  bottom-0 left-0">
-      {user ? (
+      {user && user.user_id ? (
         <View className="flex-row justify-around w-full border border-gray-600 p-1">
           <TouchableWithoutFeedback
             onPress={() => {

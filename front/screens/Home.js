@@ -28,7 +28,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { colors } from "../colors/colors";
 
 const Home = ({ navigation }) => {
-  let { user } = useContext(AuthContext);
+  let { user, urlBase } = useContext(AuthContext);
   const [forms, setForms] = useState([]);
   const [profile, setProfile] = useState();
   const [body, setBody] = useState();
@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
   );
 
   const FormsGel = async () => {
-    let response = await fetch("http://192.168.0.11:19002/api/forms/", {
+    let response = await fetch(`http://${urlBase}/api/forms/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const Home = ({ navigation }) => {
     if (body == "" || body == undefined || body == null) {
       alert("Enter something to add a note.");
     } else {
-      let response = await fetch("http://192.168.0.11:19002/api/create-form/", {
+      let response = await fetch("http://${urlBase}/api/create-form/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,17 +77,13 @@ const Home = ({ navigation }) => {
       }
     }
   };
-
   const deleteForm = async (id) => {
-    let response = await fetch(
-      `http://192.168.0.11:19002/api/form/${id}/delete/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (response.status == "200") {
       let data = forms.filter(function (form) {
         return form.id != id;
@@ -109,10 +105,9 @@ const Home = ({ navigation }) => {
       property: LayoutAnimation.Properties.opacity,
     },
   };
-
-  let getProfile = async (props) => {
+  let getProfile = async () => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${user?.user_id}/`,
+      `http://${urlBase}/api/profile/${user?.user_id}/`,
       {
         method: "GET",
         headers: {
@@ -125,7 +120,6 @@ const Home = ({ navigation }) => {
       setProfile(data);
     }
   };
-
   useEffect(() => {
     FormsGel();
     getProfile();
@@ -136,11 +130,13 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     FormsGel();
+    getProfile();
   }, []);
 
   BackHandler.addEventListener("hardwareBackPress", function () {
     return true;
   });
+
   if (!profile) {
     return (
       <View className="h-full flex justify-center">
@@ -173,7 +169,7 @@ const Home = ({ navigation }) => {
             <View>
               <Image
                 source={{
-                  uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                  uri: `http://${urlBase}/api${profile.profile_pic}`,
                 }}
                 className="h-12 w-12 rounded-full"
                 onPress={() => {
@@ -310,7 +306,7 @@ const Home = ({ navigation }) => {
                   className=" w-8 h-8 rounded-full border border-black"
                   style={{ borderColor: "white", borderWidth: 1 }}
                   source={{
-                    uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                    uri: `http://${urlBase}/api${profile.profile_pic}`,
                   }}
                 />
               </TouchableOpacity>
@@ -382,7 +378,7 @@ const Home = ({ navigation }) => {
                     <View>
                       <Image
                         source={{
-                          uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                          uri: `http://${urlBase}/api${profile.profile_pic}`,
                         }}
                         className="h-12 w-12 rounded-full"
                         onPress={() => {
@@ -503,7 +499,7 @@ const Home = ({ navigation }) => {
                       <View className="flex-row">
                         <Image
                           source={{
-                            uri: `http://192.168.0.11:19002/api${profile.profile_pic}`,
+                            uri: `http://${urlBase}/api${profile.profile_pic}`,
                           }}
                           className="h-12 w-12 ml-2 rounded-full"
                           onPress={() => {
@@ -570,6 +566,7 @@ const Home = ({ navigation }) => {
                   setForms={setForms}
                   navigation={navigation}
                   formUserRef={formUserRef}
+                  FormsGel={FormsGel}
                   setAnswermodalVisible={setAnswermodalVisible}
                 />
               );

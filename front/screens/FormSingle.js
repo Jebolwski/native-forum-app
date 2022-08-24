@@ -9,15 +9,14 @@ import slugify from "react-slugify";
 import AuthContext from "../AuthContext";
 
 const FormSingle = (props) => {
-  let { user } = useContext(AuthContext);
-
-  const [profile, setProfile] = useState();
+  let { user, urlBase } = useContext(AuthContext);
+  const [profile, setProfile] = useState([]);
 
   const [likeCount, setLikeCount] = useState(props.form.like.length);
 
   let getProfile = async () => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/profile/${user.user_id}/`,
+      `http://${urlBase}/api/profile/${user?.user_id}/`,
       {
         method: "GET",
         headers: {
@@ -31,16 +30,20 @@ const FormSingle = (props) => {
     }
   };
 
+  let flag = false;
+  for (let i = 0; i < props.form.like.length; i++) {
+    if (profile.id == props.form.like[i]) {
+      flag = true;
+    }
+  }
+
   const deleteForm = async (id) => {
-    let response = await fetch(
-      `http://192.168.0.11:19002/api/form/${id}/delete/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (response.status == "200") {
       let data = props.forms.filter(function (form) {
         return form.id != id;
@@ -51,7 +54,7 @@ const FormSingle = (props) => {
 
   const likeDislike = async () => {
     let response = await fetch(
-      `http://192.168.0.11:19002/api/form/${props.form.id}/like/dislike/`,
+      `http://${urlBase}/api/form/${props.form.id}/like/dislike/`,
       {
         method: "POST",
         headers: {
@@ -65,15 +68,14 @@ const FormSingle = (props) => {
     if (response.status == "200") {
       let data = await response.json();
       setLikeCount(data);
+      props.FormsGel();
     }
   };
 
   useEffect(() => {
     getProfile();
   }, []);
-  for (a in props.form.like.length) {
-    console.log(a);
-  }
+
   if (!profile) {
     return (
       <View className="h-full flex justify-center">
@@ -130,7 +132,7 @@ const FormSingle = (props) => {
               <Text className="ml-3 ">0</Text>
             </Text>
             <Text onPress={likeDislike}>
-              {profile.id in props.form.like ? (
+              {flag ? (
                 <Icon name="heart" size={15} color={colors.dark_button} />
               ) : (
                 <Icon name="heart-o" size={15} color={colors.dark_button} />
@@ -139,6 +141,9 @@ const FormSingle = (props) => {
             </Text>
             <Text>
               <EvilIcon
+                onPress={() => {
+                  getProfile();
+                }}
                 name="share-google"
                 size={22}
                 color={colors.dark_button}

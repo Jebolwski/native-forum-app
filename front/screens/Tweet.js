@@ -1,10 +1,11 @@
 import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import AuthContext from "../AuthContext";
 
 const Tweet = ({ navigation, route }) => {
   let form = route.params.form;
-  console.log(form);
+  let { urlBase } = useContext(AuthContext);
   return (
     <View className="m-0 p-0 h-full bg-white">
       <View className="flex-row p-3 border-b border-gray-400">
@@ -27,7 +28,7 @@ const Tweet = ({ navigation, route }) => {
         <View className="flex justify-center">
           <Image
             source={{
-              uri: `http://192.168.0.11:19002/api${form.profileObj.profile_pic}`,
+              uri: `http://${urlBase}/api${form.profileObj.profile_pic}`,
             }}
             className="h-9 w-9 border rounded-full"
           />
