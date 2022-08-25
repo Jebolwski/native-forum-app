@@ -4,9 +4,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from .models import Form, Profile
-from .serializers import FormSerializer, ProfileSerializer
+from .models import Form, FormAnswer, Profile
+from .serializers import FormAnswerSerializer, FormSerializer, ProfileSerializer
 from django.shortcuts import get_object_or_404
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -94,5 +95,17 @@ def LikeDislikeForm(request,pk):
     else:
         form.like.remove(profile)
         return Response(len(form.like.all()))
-    return Response("assad")
+
+
+#!Answer a specific form.
+@api_view(['POST'])
+def AnswerForm(request,pk):
+    form = Form.objects.get(id=pk)
+    serializer = FormAnswerSerializer(data = request.data,many=False)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(form.profile.user.username+" adlı kullanıcının formu cevaplandı.")
+    else:
+        return Response(request.data)
+
     

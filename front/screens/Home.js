@@ -32,6 +32,7 @@ const Home = ({ navigation }) => {
   const [forms, setForms] = useState([]);
   const [profile, setProfile] = useState();
   const [body, setBody] = useState();
+  const [answerBody, setAnswerBody] = useState();
   const [answermodalVisible, setAnswermodalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -77,6 +78,28 @@ const Home = ({ navigation }) => {
       }
     }
   };
+
+  const answerForm = async () => {
+    if (body == "" || body == undefined || body == null) {
+      alert("Enter something to add a note.");
+    } else {
+      let response = await fetch(`http://${urlBase}/api/form/${id}/answer/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          body: body,
+          profile: profile?.id,
+        }),
+      });
+      if (response.status == "200") {
+        setAnswermodalVisible(false);
+        alert("cevaplandı.");
+      }
+    }
+  };
+
   const deleteForm = async (id) => {
     let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
       method: "POST",
@@ -455,7 +478,6 @@ const Home = ({ navigation }) => {
                       <AntDesign name="close" size={26} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={createForm}
                       className="flex justify-center"
                     >
                       <View
@@ -507,7 +529,8 @@ const Home = ({ navigation }) => {
                           }}
                         />
                         <TextInput
-                          placeholder="What's happening ?"
+                          
+                          placeholder="Answer the tweet..."
                           className="rounded-lg p-2 w-5/6 mb-3 ml-3 mt-1"
                           style={{
                             minHeight: 100,
@@ -516,7 +539,7 @@ const Home = ({ navigation }) => {
                           multiline={true}
                           ref={textRef}
                           onChangeText={(text) => {
-                            setBody(text);
+                            setAnswerBody(text);
                             if (text.length > 0) {
                               setBtnBackgroundColor(colors.blue);
                             } else {

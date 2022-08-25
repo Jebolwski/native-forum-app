@@ -11,7 +11,6 @@ import AuthContext from "../AuthContext";
 const FormSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
   const [profile, setProfile] = useState([]);
-
   const [likeCount, setLikeCount] = useState(props.form.like.length);
 
   let getProfile = async () => {
@@ -121,7 +120,10 @@ const FormSingle = (props) => {
           <View className="flex-row justify-around mt-4 mb-1">
             <Text
               onPress={() => {
-                props.setAnswermodalVisible(true);
+                props.navigation.navigate("AnswerForm", {
+                  form: props.form,
+                  profile: profile,
+                });
               }}
             >
               <Icon name="comment-o" size={15} color={colors.dark_button} />{" "}
@@ -133,7 +135,7 @@ const FormSingle = (props) => {
             </Text>
             <Text onPress={likeDislike}>
               {flag ? (
-                <Icon name="heart" size={15} color={colors.dark_button} />
+                <Icon name="heart" size={15} color={"red"} />
               ) : (
                 <Icon name="heart-o" size={15} color={colors.dark_button} />
               )}{" "}

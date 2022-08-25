@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   let [user, setUser] = useState(async () =>
     AsyncStorage.getItem("user") ? await AsyncStorage.getItem("user") : null
   );
-  let urlBase = "192.168.0.11:19002";
+  let urlBase = "192.168.1.10:19002";
   let loginUser = async (username1, password1) => {
     let response = await fetch(`http://${urlBase}/api/token/`, {
       method: "POST",

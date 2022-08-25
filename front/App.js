@@ -7,10 +7,8 @@ import { TailwindProvider } from "tailwindcss-react-native";
 import Profile from "./screens/Profile";
 import { StatusBar, View } from "react-native";
 import Settings from "./screens/Settings";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import Icon from "react-native-vector-icons/FontAwesome";
-import IonIcons from "react-native-vector-icons/Ionicons";
 import BottomNavigator from "./components/BottomNavigator";
+import AnswerForm from "./screens/AnswerForm";
 import Tweet from "./screens/Tweet";
 
 const Stack = createNativeStackNavigator();
@@ -44,6 +42,7 @@ export default function App() {
             }}
           >
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="AnswerForm" component={AnswerForm} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />
