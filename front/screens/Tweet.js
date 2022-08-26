@@ -1,11 +1,42 @@
-import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
-import React, { useContext } from "react";
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AuthContext from "../AuthContext";
+import FormSingle from "./FormSingle";
 
 const Tweet = ({ navigation, route }) => {
   let form = route.params.form;
   let { urlBase } = useContext(AuthContext);
+  const [formAnswers, setFormAnswers] = useState([]);
+
+  let GetformAnswers = async () => {
+    let response = await fetch(
+      `http://${urlBase}/api/form/${form.id}/answers/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === "200") {
+      let data = await response.json();
+      setFormAnswers(data);
+      
+    }
+  };
+
+  useEffect(() => {
+    GetformAnswers();
+  }, []);
+
   return (
     <View className="m-0 p-0 h-full bg-white">
       <View className="flex-row p-3 border-b border-gray-400">
@@ -60,6 +91,18 @@ const Tweet = ({ navigation, route }) => {
           <Text className="ml-2">Likes</Text>
         </View>
       </View>
+      <ScrollView>
+        {formAnswers && formAnswers.length > 0 ? (
+          formAnswers.map((form) => {
+            return <FormSingle form={form} key={form.id} />;
+          })
+        ) : (
+          <View className="p-8">
+            <ActivityIndicator size={"large"} color={"aqua"} />
+          </View>
+        )}
+        {}
+      </ScrollView>
     </View>
   );
 };

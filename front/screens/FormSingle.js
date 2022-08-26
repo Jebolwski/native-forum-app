@@ -10,31 +10,7 @@ import AuthContext from "../AuthContext";
 
 const FormSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
-  const [profile, setProfile] = useState([]);
   const [likeCount, setLikeCount] = useState(props.form.like.length);
-
-  let getProfile = async () => {
-    let response = await fetch(
-      `http://${urlBase}/api/profile/${user?.user_id}/`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (response.status === 200) {
-      let data = await response.json();
-      setProfile(data);
-    }
-  };
-
-  let flag = false;
-  for (let i = 0; i < props.form.like.length; i++) {
-    if (profile.id == props.form.like[i]) {
-      flag = true;
-    }
-  }
 
   const deleteForm = async (id) => {
     let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
@@ -71,11 +47,7 @@ const FormSingle = (props) => {
     }
   };
 
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  if (!profile) {
+  if (!props.profile) {
     return (
       <View className="h-full flex justify-center">
         <ActivityIndicator size="large" />
@@ -112,7 +84,7 @@ const FormSingle = (props) => {
             className="mt-3"
             useRef={props.formUserRef}
             onPress={() => {
-              props.navigation.navigate("Tweet", { form: props.form });
+              props.navigation.navigate("Tweet", { form: props.form,profile:props.profile });
             }}
           >
             {props.form.body}
@@ -122,7 +94,7 @@ const FormSingle = (props) => {
               onPress={() => {
                 props.navigation.navigate("AnswerForm", {
                   form: props.form,
-                  profile: profile,
+                  profile: props.profile,
                 });
               }}
             >
@@ -134,7 +106,7 @@ const FormSingle = (props) => {
               <Text className="ml-3 ">0</Text>
             </Text>
             <Text onPress={likeDislike}>
-              {flag ? (
+              {props.form.like.includes(props.profile.id) ? (
                 <Icon name="heart" size={15} color={"red"} />
               ) : (
                 <Icon name="heart-o" size={15} color={colors.dark_button} />
@@ -143,9 +115,6 @@ const FormSingle = (props) => {
             </Text>
             <Text>
               <EvilIcon
-                onPress={() => {
-                  getProfile();
-                }}
                 name="share-google"
                 size={22}
                 color={colors.dark_button}

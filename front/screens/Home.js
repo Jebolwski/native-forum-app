@@ -453,128 +453,6 @@ const Home = ({ navigation }) => {
             </View>
           </Modal>
 
-          {/* Formu cevaplama modalı */}
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={answermodalVisible}
-            onRequestClose={() => {
-              setModalVisible(!answermodalVisible);
-            }}
-          >
-            <View
-              className="items-center w-full  h-full bg-neutral-600"
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <View className="items-center w-full relative text-input bg-white shadow-2xl h-full">
-                <View className="w-full">
-                  <View className="flex-row justify-between border-b border-gray-400 px-4 py-2">
-                    <TouchableOpacity
-                      onPress={() => {
-                        setAnswermodalVisible(false);
-                      }}
-                      className="flex justify-center"
-                    >
-                      <AntDesign name="close" size={26} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      className="flex justify-center"
-                    >
-                      <View
-                        className="px-2 rounded-2xl"
-                        style={[
-                          styles.btn,
-                          {
-                            backgroundColor: btnBackgroundColor,
-                            borderWidth: 1,
-                            borderColor: btnBackgroundColor,
-                          },
-                        ]}
-                      >
-                        <Text className="text-white">Yanıtla</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View>
-                    <View>
-                      <View className="flex-row justify-between">
-                        <View
-                          style={{
-                            backgroundColor: "rgb(200,200,200)",
-                            width: 2,
-                            height: 30,
-                            marginLeft: 30,
-                          }}
-                        />
-                        <View className="w-4/5 mt-1">
-                          <Text>
-                            <Text style={{ color: colors.blue }}>
-                              @MMAJunkie
-                            </Text>{" "}
-                            ve{" "}
-                            <Text style={{ color: colors.blue }}>@messi</Text>{" "}
-                            adlı kullanıcılara yanıt olarak
-                          </Text>
-                        </View>
-                      </View>
-                      <View className="flex-row">
-                        <Image
-                          source={{
-                            uri: `http://${urlBase}/api${profile.profile_pic}`,
-                          }}
-                          className="h-12 w-12 ml-2 rounded-full"
-                          onPress={() => {
-                            navigation.navigate("Profile");
-                          }}
-                        />
-                        <TextInput
-                          
-                          placeholder="Answer the tweet..."
-                          className="rounded-lg p-2 w-5/6 mb-3 ml-3 mt-1"
-                          style={{
-                            minHeight: 100,
-                            textAlignVertical: "top",
-                          }}
-                          multiline={true}
-                          ref={textRef}
-                          onChangeText={(text) => {
-                            setAnswerBody(text);
-                            if (text.length > 0) {
-                              setBtnBackgroundColor(colors.blue);
-                            } else {
-                              setBtnBackgroundColor("rgba(29, 155, 240,0.7)");
-                            }
-                          }}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View className="absolute bottom-0 left-0 w-full px-5 py-3 vertical-icons flex">
-                  <View className="flex-row justify-between">
-                    <View style={{ display: "flex", justifyContent: "center" }}>
-                      <Icon name="image" color={colors.blue} size={19} />
-                    </View>
-                    <View style={{ display: "flex", justifyContent: "center" }}>
-                      <Icon name="smile-o" color={colors.blue} size={19} />
-                    </View>
-                    <View style={{ display: "flex", justifyContent: "center" }}>
-                      <Foundation
-                        name="graph-horizontal"
-                        color={colors.blue}
-                        size={19}
-                      />
-                    </View>
-                    <View style={{ display: "flex", justifyContent: "center" }}>
-                      <Evil name="location" color={colors.blue} size={19} />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </Modal>
-
           <ScrollView
             className="mb-14  border-b border-gray-400"
             showsVerticalScrollIndicator={false}
@@ -589,6 +467,7 @@ const Home = ({ navigation }) => {
                   setForms={setForms}
                   navigation={navigation}
                   formUserRef={formUserRef}
+                  profile={profile}
                   FormsGel={FormsGel}
                   setAnswermodalVisible={setAnswermodalVisible}
                 />

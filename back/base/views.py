@@ -1,4 +1,4 @@
-from http.client import HTTPResponse
+from django.http import HttpResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import Form, FormAnswer, Profile
 from .serializers import FormAnswerSerializer, FormSerializer, ProfileSerializer
 from django.shortcuts import get_object_or_404
+import json
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -107,5 +108,14 @@ def AnswerForm(request,pk):
         return Response(form.profile.user.username+" adlı kullanıcının formu cevaplandı.")
     else:
         return Response(request.data)
+
+
+
+#!A specific forms answers.
+@api_view(['GET'])
+def FormAnswers(request,pk):
+    form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk))
+    print(form)
+    return HttpResponse(form)
 
     
