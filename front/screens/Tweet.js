@@ -13,8 +13,11 @@ import FormSingle from "./FormSingle";
 
 const Tweet = ({ navigation, route }) => {
   let form = route.params.form;
-  let { urlBase } = useContext(AuthContext);
-  const [formAnswers, setFormAnswers] = useState([]);
+  let { url, urlBase } = useContext(AuthContext);
+  const [formAnswers, setFormAnswers] = useState();
+  const [show, setShow] = useState(false);
+
+  let data = [];
 
   let GetformAnswers = async () => {
     let response = await fetch(
@@ -26,10 +29,9 @@ const Tweet = ({ navigation, route }) => {
         },
       }
     );
-    if (response.status === "200") {
-      let data = await response.json();
+    if (response.status === 200) {
+      data = await response.json();
       setFormAnswers(data);
-      
     }
   };
 
@@ -93,7 +95,7 @@ const Tweet = ({ navigation, route }) => {
       </View>
       <ScrollView>
         {formAnswers && formAnswers.length > 0 ? (
-          formAnswers.map((form) => {
+          data.map((form) => {
             return <FormSingle form={form} key={form.id} />;
           })
         ) : (

@@ -109,12 +109,10 @@ const Settings = ({ navigation }) => {
         >
           <View className="flex-row p-3 w-11/12 text-center">
             <View className="w-10 flex justify-center">
-              <AntDesign name="lock" size={26} />
+              <AntDesign name="logout" size={22} />
             </View>
             <View>
-              <Text className="font-bold text-lg">
-                Erişilebilirlik, ekran ve diller
-              </Text>
+              <Text className="font-bold text-lg">Logout</Text>
               <Text className="mt-1 text-gray-800">
                 Hesabın hakkındaki bilgileri gör, verilerinin arşivini indir
                 veya hesap devre dışı bırakma seçeneklerin hakkında bilgi edin.

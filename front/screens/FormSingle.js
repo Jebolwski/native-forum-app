@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
@@ -11,6 +17,23 @@ import AuthContext from "../AuthContext";
 const FormSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
   const [likeCount, setLikeCount] = useState(props.form.like.length);
+  const [profile, setProfile] = useState();
+
+  let getProfile = async () => {
+    let response = await fetch(
+      `http://${urlBase}/api/profile/${user?.user_id}/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200) {
+      let data = await response.json();
+      setProfile(data);
+    }
+  };
 
   const deleteForm = async (id) => {
     let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
@@ -47,7 +70,15 @@ const FormSingle = (props) => {
     }
   };
 
-  if (!props.profile) {
+  const [val, setVal] = useState(0);
+
+  const scale1 = useRef(new Animated.Value(val)).current;
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  if (!profile) {
     return (
       <View className="h-full flex justify-center">
         <ActivityIndicator size="large" />
@@ -55,14 +86,14 @@ const FormSingle = (props) => {
     );
   } else {
     return (
-      <View className="items-center w-full border-b ">
+      <View className="items-center w-full border-b">
         <View
           className="p-2 w-full shadow-md"
           style={{
             borderColor: "white",
           }}
         >
-          <View className="flex-row justify-between">
+          <View className="relative flex-row justify-between">
             <Text>
               {props.form.username}{" "}
               <Text className="font-light" style={{ fontSize: 12 }}>
@@ -71,20 +102,63 @@ const FormSingle = (props) => {
               </Text>
               <Text className="font-light pl-3 ">• 17 sa</Text>
             </Text>
-            <Entypo
-              name="dots-three-horizontal"
-              size={15}
-              onPress={() => {
-                deleteForm(props.form.id);
-              }}
-              style={{ transform: [{ rotate: "90deg" }], marginTop: 5 }}
-            />
+            {profile.id == props.form.profile ? (
+              <View className="relative">
+                <TouchableOpacity
+                  onPress={() => {
+                    setVal(val == 0 ? 1 : 0);
+                    console.log(val);
+                    Animated.timing(scale1, {
+                      toValue: val,
+                      duration: 200,
+                      useNativeDriver: true,
+                    }).start();
+                  }}
+                >
+                  <Animated.View>
+                    <Entypo
+                      name="dots-three-horizontal"
+                      size={15}
+                      style={{ transform: [{ rotate: "90deg" }], marginTop: 5 }}
+                    />
+                  </Animated.View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="absolute bg-white border border-gray-400 w-32 right-8 top-4 px-3 py-2 rounded-md"
+                  style={{
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 5,
+                    },
+                    shadowOpacity: 0.36,
+                    shadowRadius: 6.68,
+                    zIndex: 30,
+                    elevation: 11,
+                    transform: [{ scale: scale1 }],
+                  }}
+                >
+                  <Text
+                    onPress={() => {
+                      deleteForm(props.form.id);
+                    }}
+                  >
+                    Tweeti Sil
+                  </Text>
+                  <Text>Tweeti Düzenle</Text>
+                  <Text>Favorilere Ekle</Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
           <Text
             className="mt-3"
             useRef={props.formUserRef}
             onPress={() => {
-              props.navigation.navigate("Tweet", { form: props.form,profile:props.profile });
+              props.navigation.navigate("Tweet", {
+                form: props.form,
+                profile: profile,
+              });
             }}
           >
             {props.form.body}
@@ -94,7 +168,7 @@ const FormSingle = (props) => {
               onPress={() => {
                 props.navigation.navigate("AnswerForm", {
                   form: props.form,
-                  profile: props.profile,
+                  profile: profile,
                 });
               }}
             >
@@ -106,7 +180,7 @@ const FormSingle = (props) => {
               <Text className="ml-3 ">0</Text>
             </Text>
             <Text onPress={likeDislike}>
-              {props.form.like.includes(props.profile.id) ? (
+              {props.form.like.includes(profile.id) ? (
                 <Icon name="heart" size={15} color={"red"} />
               ) : (
                 <Icon name="heart-o" size={15} color={colors.dark_button} />

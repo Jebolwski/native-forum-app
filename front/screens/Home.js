@@ -35,12 +35,11 @@ const Home = ({ navigation }) => {
   const [answerBody, setAnswerBody] = useState();
   const [answermodalVisible, setAnswermodalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const formUserRef = useRef();
-
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
   );
+
+  const formUserRef = useRef();
 
   const FormsGel = async () => {
     let response = await fetch(`http://${urlBase}/api/forms/`, {
@@ -54,11 +53,12 @@ const Home = ({ navigation }) => {
       setForms(data);
     }
   };
+
   const createForm = async () => {
     if (body == "" || body == undefined || body == null) {
       alert("Enter something to add a note.");
     } else {
-      let response = await fetch("http://${urlBase}/api/create-form/", {
+      let response = await fetch(`http://${urlBase}/api/create-form/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,6 +114,7 @@ const Home = ({ navigation }) => {
       setForms(data);
     }
   };
+
   const isFocused = useIsFocused();
 
   const layoutconfig = {
@@ -128,6 +129,7 @@ const Home = ({ navigation }) => {
       property: LayoutAnimation.Properties.opacity,
     },
   };
+
   let getProfile = async () => {
     let response = await fetch(
       `http://${urlBase}/api/profile/${user?.user_id}/`,
@@ -143,12 +145,14 @@ const Home = ({ navigation }) => {
       setProfile(data);
     }
   };
+
   useEffect(() => {
     FormsGel();
     getProfile();
   }, [isFocused]);
 
   let textRef = useRef();
+
   const translation = useRef(new Animated.Value(-600)).current;
 
   useEffect(() => {

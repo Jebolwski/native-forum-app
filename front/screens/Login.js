@@ -13,6 +13,7 @@ const Login = ({ navigation }) => {
       <View className="container bg-white h-full items-center">
         <TextInput
           className="px-4 w-2/3 py-1 rounded-lg mt-14 border border-stone-800"
+          style={{}}
           placeholder="Username"
           onChangeText={(text) => {
             setUsername1(text);
@@ -39,6 +40,8 @@ const Login = ({ navigation }) => {
               let response = await loginUser(username1, password1);
               if (response === "OK") {
                 navigation.navigate("Home");
+              } else {
+                console.log("aa");
               }
             }}
           />

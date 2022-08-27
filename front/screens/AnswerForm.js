@@ -141,7 +141,7 @@ const AnswerForm = (props) => {
                       }}
                     />
                     <TextInput
-                      placeholder="Answer the tweet..."
+                      placeholder="Tweet your replay"
                       className="rounded-lg p-2 w-5/6 mb-3 ml-3 mt-1"
                       style={{
                         minHeight: 100,

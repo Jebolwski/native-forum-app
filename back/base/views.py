@@ -115,7 +115,10 @@ def AnswerForm(request,pk):
 @api_view(['GET'])
 def FormAnswers(request,pk):
     form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk))
-    print(form)
-    return HttpResponse(form)
+    dizi = []
+    for i in form:
+        dizi.append({'id':i.id,'body':i.body,'create':i.create.strftime("%m %B %Y")})
+    jsonString = json.dumps(dizi)
+    return HttpResponse(jsonString)
 
     
