@@ -23,6 +23,7 @@ urlpatterns = [
     path('profile/<int:pk>/edit/', views.EditProfile, name='profile-forms'),
 
     path('form/<int:pk>/like/dislike/', views.LikeDislikeForm, name='like-dislike-form'),
+    path('form/answer/<int:pk>/like/dislike/', views.LikeDislikeFormAnswer, name='like-dislike-form'),
     path('form/<int:pk>/answer/', views.AnswerForm, name='answer-form'),
     path('form/<int:pk>/answers/', views.FormAnswers, name='form-answers'),
 

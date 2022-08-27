@@ -15,7 +15,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import AuthContext from "../AuthContext";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/FontAwesome";
-import FormSingle from "./FormSingle";
+import ProfileFormSingle from "./ProfileFormSingle";
 import { colors } from "../colors/colors";
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -53,6 +53,7 @@ const Profile = ({ navigation }) => {
     );
     if (response.status === 200) {
       let data = await response.json();
+      console.log(data);
       setProfilesForm(data);
       setFinalState(data);
     }
@@ -87,7 +88,6 @@ const Profile = ({ navigation }) => {
   const [finalState, setFinalState] = useState([]);
 
   const isFocused = useIsFocused();
-
   const upload = async () => {
     const result = await launchCamera(options);
   };
@@ -265,7 +265,12 @@ const Profile = ({ navigation }) => {
         <ScrollView className="bg-dark">
           {finalState.map((form) => {
             return (
-              <FormSingle form={form} key={form.id} navigation={navigation} />
+              <ProfileFormSingle
+                form={form}
+                key={form.id}
+                navigation={navigation}
+                getProfilesForms={getProfilesForms}
+              />
             );
           })}
         </ScrollView>

@@ -14,7 +14,7 @@ import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 import AuthContext from "../AuthContext";
 
-const FormSingle = (props) => {
+const ProfileFormSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
   const [likeCount, setLikeCount] = useState(props.form.like.length);
   const [profile, setProfile] = useState();
@@ -66,7 +66,7 @@ const FormSingle = (props) => {
     if (response.status == "200") {
       let data = await response.json();
       setLikeCount(data);
-      props.FormsGel();
+      props.getProfilesForms();
     }
   };
 
@@ -200,4 +200,4 @@ const FormSingle = (props) => {
   }
 };
 
-export default FormSingle;
+export default ProfileFormSingle;

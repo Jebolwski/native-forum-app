@@ -9,15 +9,13 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AuthContext from "../AuthContext";
-import FormSingle from "./FormSingle";
+import FormAnswerSingle from "./FormAnswerSingle";
 
 const Tweet = ({ navigation, route }) => {
   let form = route.params.form;
   let { url, urlBase } = useContext(AuthContext);
   const [formAnswers, setFormAnswers] = useState();
   const [show, setShow] = useState(false);
-
-  let data = [];
 
   let GetformAnswers = async () => {
     let response = await fetch(
@@ -29,8 +27,8 @@ const Tweet = ({ navigation, route }) => {
         },
       }
     );
-    if (response.status === 200) {
-      data = await response.json();
+    if (response.status == 200) {
+      let data = await response.json();
       setFormAnswers(data);
     }
   };
@@ -95,8 +93,14 @@ const Tweet = ({ navigation, route }) => {
       </View>
       <ScrollView>
         {formAnswers && formAnswers.length > 0 ? (
-          data.map((form) => {
-            return <FormSingle form={form} key={form.id} />;
+          formAnswers.map((formAnswer) => {
+            return (
+              <FormAnswerSingle
+                form={formAnswer}
+                key={formAnswer.id}
+                GetformAnswers={GetformAnswers}
+              />
+            );
           })
         ) : (
           <View className="p-8">

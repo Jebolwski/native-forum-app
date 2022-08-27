@@ -16,7 +16,7 @@ import AuthContext from "../AuthContext";
 
 const FormSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
-  const [likeCount, setLikeCount] = useState(props.form.like.length);
+  const [likeCount, setLikeCount] = useState(props.form.formanswerlike.length);
   const [profile, setProfile] = useState();
 
   let getProfile = async () => {
@@ -52,7 +52,7 @@ const FormSingle = (props) => {
 
   const likeDislike = async () => {
     let response = await fetch(
-      `http://${urlBase}/api/form/${props.form.id}/like/dislike/`,
+      `http://${urlBase}/api/form/answer/${props.form.id}/like/dislike/`,
       {
         method: "POST",
         headers: {
@@ -66,13 +66,15 @@ const FormSingle = (props) => {
     if (response.status == "200") {
       let data = await response.json();
       setLikeCount(data);
-      props.FormsGel();
+      props.getFormAnswers();
     }
   };
 
   const [val, setVal] = useState(0);
 
   const scale1 = useRef(new Animated.Value(val)).current;
+
+  console.log(props.form);
 
   useEffect(() => {
     getProfile();
@@ -179,7 +181,7 @@ const FormSingle = (props) => {
               <Text className="ml-3 ">0</Text>
             </Text>
             <Text onPress={likeDislike}>
-              {props.form.like.includes(profile.id) ? (
+              {props.form.formanswerlike.includes(profile.id) ? (
                 <Icon name="heart" size={15} color={"red"} />
               ) : (
                 <Icon name="heart-o" size={15} color={colors.dark_button} />

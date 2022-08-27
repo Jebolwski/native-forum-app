@@ -66,6 +66,7 @@ def ProfileForms(request,pk):
     profile = Profile.objects.get(user=User.objects.get(id=pk))
     forms = Form.objects.filter(profile=profile).order_by("-edit")
     serializer = FormSerializer(forms, many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
 
@@ -98,6 +99,22 @@ def LikeDislikeForm(request,pk):
         return Response(len(form.like.all()))
 
 
+
+#!Like / Dislike a specific form answer.
+@api_view(['POST'])
+def LikeDislikeFormAnswer(request,pk):
+    formanswer = FormAnswer.objects.get(id=pk)
+    user = request.data.get("user_id")
+    profile = Profile.objects.get(user=user)
+    if not profile in formanswer.like.all():
+        formanswer.like.add(profile)
+        return Response(len(formanswer.like.all()))
+    else:
+        formanswer.like.remove(profile)
+        return Response(len(formanswer.like.all()))
+
+
+
 #!Answer a specific form.
 @api_view(['POST'])
 def AnswerForm(request,pk):
@@ -115,10 +132,7 @@ def AnswerForm(request,pk):
 @api_view(['GET'])
 def FormAnswers(request,pk):
     form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk))
-    dizi = []
-    for i in form:
-        dizi.append({'id':i.id,'body':i.body,'create':i.create.strftime("%m %B %Y")})
-    jsonString = json.dumps(dizi)
-    return HttpResponse(jsonString)
+    serializer = FormAnswerSerializer(form,many=True)
+    return HttpResponse(json.dumps(serializer.data))
 
     

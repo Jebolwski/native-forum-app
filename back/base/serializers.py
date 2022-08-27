@@ -40,6 +40,15 @@ class FormSerializer(ModelSerializer):
         return count
 
 class FormAnswerSerializer(ModelSerializer):
+
+    answer_count = serializers.SerializerMethodField('get_answer_count')
+
     class Meta:
         model       = FormAnswer
         fields      = "__all__"
+        queryset = FormAnswer.objects.filter(level=0)
+
+    
+    def get_answer_count(self,formanswer):
+        count = len(FormAnswer.objects.filter(parent=formanswer))
+        return count
