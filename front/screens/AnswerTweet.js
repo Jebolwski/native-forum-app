@@ -12,7 +12,7 @@ import { useIsFocused } from "@react-navigation/native";
 import AuthContext from "../AuthContext";
 import FormAnswerSingle from "./FormAnswerSingle";
 
-const Tweet = ({ navigation, route }) => {
+const AnswerTweet = ({ navigation, route }) => {
   let form = route.params.form;
   let { url, urlBase } = useContext(AuthContext);
   const [formAnswers, setFormAnswers] = useState();
@@ -20,7 +20,7 @@ const Tweet = ({ navigation, route }) => {
 
   let GetformAnswers = async () => {
     let response = await fetch(
-      `http://${urlBase}/api/form/${form.id}/answers/`,
+      `http://${urlBase}/api/form/answer/${form.id}/answers/`,
       {
         method: "GET",
         headers: {
@@ -95,26 +95,21 @@ const Tweet = ({ navigation, route }) => {
         </View>
       </View>
       <ScrollView>
-        {formAnswers ? (
-          formAnswers.map((formAnswer) => {
-            return (
-              <FormAnswerSingle
-                form={formAnswer}
-                key={formAnswer.id}
-                GetformAnswers={GetformAnswers}
-                navigation={navigation}
-              />
-            );
-          })
-        ) : (
-          <View className="p-8">
-            <ActivityIndicator size={"large"} color={"aqua"} />
-          </View>
-        )}
-        {}
+        {formAnswers && formAnswers.length > 0
+          ? formAnswers.map((formAnswer) => {
+              return (
+                <FormAnswerSingle
+                  form={formAnswer}
+                  key={formAnswer.id}
+                  GetformAnswers={GetformAnswers}
+                  navigation={navigation}
+                />
+              );
+            })
+          : null}
       </ScrollView>
     </View>
   );
 };
 
-export default Tweet;
+export default AnswerTweet;

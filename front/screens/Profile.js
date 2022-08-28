@@ -53,7 +53,6 @@ const Profile = ({ navigation }) => {
     );
     if (response.status === 200) {
       let data = await response.json();
-      console.log(data);
       setProfilesForm(data);
       setFinalState(data);
     }

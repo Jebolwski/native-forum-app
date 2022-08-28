@@ -40,15 +40,25 @@ class FormSerializer(ModelSerializer):
         return count
 
 class FormAnswerSerializer(ModelSerializer):
-
+    username = serializers.SerializerMethodField('get_username')
     answer_count = serializers.SerializerMethodField('get_answer_count')
+    profileObj = serializers.SerializerMethodField('get_profile')
 
     class Meta:
         model       = FormAnswer
         fields      = "__all__"
-        queryset = FormAnswer.objects.filter(level=0)
+    
+    
 
     
     def get_answer_count(self,formanswer):
         count = len(FormAnswer.objects.filter(parent=formanswer))
         return count
+
+    def get_username(self,formanswer):
+        username = formanswer.profile.user.username
+        return username
+
+    def get_profile(self, formanswer):
+       profile = formanswer.profile
+       return ProfileSerializer(profile, many=False).data

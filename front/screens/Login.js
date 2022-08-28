@@ -10,9 +10,9 @@ const Login = ({ navigation }) => {
 
   return (
     <>
-      <View className="container bg-white h-full items-center">
+      <View className="container bg-white h-full flex items-center justify-center">
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-14 border border-stone-800"
+          className="px-4 w-2/3 py-1 rounded-lg border border-stone-800"
           style={{}}
           placeholder="Username"
           onChangeText={(text) => {
@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
           }}
         />
         <TextInput
-          className="px-4 w-2/3 py-1 rounded-lg mt-14 border border-stone-800"
+          className="px-4 w-2/3 py-1 rounded-lg mt-20 border border-stone-800"
           secureTextEntry={true}
           onChangeText={(text) => {
             setPassword1(text);
@@ -40,8 +40,6 @@ const Login = ({ navigation }) => {
               let response = await loginUser(username1, password1);
               if (response === "OK") {
                 navigation.navigate("Home");
-              } else {
-                console.log("aa");
               }
             }}
           />

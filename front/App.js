@@ -10,6 +10,8 @@ import Settings from "./screens/Settings";
 import BottomNavigator from "./components/BottomNavigator";
 import AnswerForm from "./screens/AnswerForm";
 import Tweet from "./screens/Tweet";
+import AnswerFormAnswer from "./screens/AnswerFormAnswer";
+import AnswerTweet from "./screens/AnswerTweet";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +45,11 @@ export default function App() {
           >
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AnswerForm" component={AnswerForm} />
+            <Stack.Screen
+              name="AnswerFormAnswer"
+              component={AnswerFormAnswer}
+            />
+            <Stack.Screen name="AnswerTweet" component={AnswerTweet} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />

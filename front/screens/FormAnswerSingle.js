@@ -4,12 +4,15 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Animated,
+  Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
+import { useIsFocused } from "@react-navigation/native";
 import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 import AuthContext from "../AuthContext";
@@ -74,11 +77,11 @@ const FormSingle = (props) => {
 
   const scale1 = useRef(new Animated.Value(val)).current;
 
-  console.log(props.form);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [isFocused]);
 
   if (!profile) {
     return (
@@ -96,14 +99,42 @@ const FormSingle = (props) => {
           }}
         >
           <View className="relative flex-row justify-between">
-            <Text>
-              {props.form.username}{" "}
-              <Text className="font-light" style={{ fontSize: 12 }}>
-                {" "}
-                @{slugify(props.form.username)}{" "}
-              </Text>
-              <Text className="font-light pl-3 ">• 17 sa</Text>
-            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                props.navigation.navigate("Profile", {
+                  form: props.form.profile,
+                });
+              }}
+            >
+              <View className="flex-row content-center justify-center p-1">
+                <Image
+                  source={{
+                    uri: `http://${urlBase}/api${props.form.profileObj.profile_pic}`,
+                  }}
+                  className="w-8 h-8 rounded-full"
+                />
+
+                <Text
+                  style={{
+                    paddingLeft: 7,
+                    paddingTop: 5,
+                  }}
+                >
+                  {props.form.username}{" "}
+                  <Text
+                    className="font-light"
+                    style={{
+                      fontSize: 12,
+                    }}
+                  >
+                    {" "}
+                    @{slugify(props.form.username)}{" "}
+                  </Text>
+                  <Text className="font-light pl-3 ">• 17 sa</Text>
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+
             {profile.id == props.form.profile ? (
               <View className="relative">
                 <TouchableOpacity
@@ -156,7 +187,8 @@ const FormSingle = (props) => {
             className="mt-3"
             useRef={props.formUserRef}
             onPress={() => {
-              props.navigation.navigate("Tweet", {
+              console.log(props.form);
+              props.navigation.push("AnswerTweet", {
                 form: props.form,
                 profile: profile,
               });
@@ -167,8 +199,9 @@ const FormSingle = (props) => {
           <View className="flex-row justify-around mt-4 mb-1">
             <Text
               onPress={() => {
-                props.navigation.navigate("AnswerForm", {
+                props.navigation.navigate("AnswerFormAnswer", {
                   form: props.form,
+
                   profile: profile,
                 });
               }}

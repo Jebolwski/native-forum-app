@@ -131,7 +131,16 @@ def AnswerForm(request,pk):
 #!A specific forms answers.
 @api_view(['GET'])
 def FormAnswers(request,pk):
-    form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk))
+    form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk), parent = None)
+    print(form)
+    serializer = FormAnswerSerializer(form,many=True)
+    return HttpResponse(json.dumps(serializer.data))
+
+    
+#!A specific form answer answers.
+@api_view(['GET'])
+def FormAnswerAnswers(request,pk):
+    form = FormAnswer.objects.filter(parent = get_object_or_404(FormAnswer,id=pk))
     serializer = FormAnswerSerializer(form,many=True)
     return HttpResponse(json.dumps(serializer.data))
 
