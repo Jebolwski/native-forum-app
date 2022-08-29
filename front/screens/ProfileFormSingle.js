@@ -4,6 +4,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Animated,
+  Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -94,14 +96,42 @@ const ProfileFormSingle = (props) => {
           }}
         >
           <View className="relative flex-row justify-between">
-            <Text>
-              {props.form.username}{" "}
-              <Text className="font-light" style={{ fontSize: 12 }}>
-                {" "}
-                @{slugify(props.form.username)}{" "}
-              </Text>
-              <Text className="font-light pl-3 ">• 17 sa</Text>
-            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                props.navigation.navigate("Profile", {
+                  profile: props.form.profileObj,
+                });
+              }}
+            >
+              <View className="flex-row content-center justify-center p-1">
+                <Image
+                  source={{
+                    uri: `http://${urlBase}/api${props.form.profileObj.profile_pic}`,
+                  }}
+                  className="w-8 h-8 rounded-full"
+                />
+
+                <Text
+                  style={{
+                    paddingLeft: 7,
+                    paddingTop: 5,
+                  }}
+                >
+                  {props.form.username}{" "}
+                  <Text
+                    className="font-light"
+                    style={{
+                      fontSize: 12,
+                    }}
+                  >
+                    {" "}
+                    @{slugify(props.form.username)}{" "}
+                  </Text>
+                  <Text className="font-light pl-3 ">• 17 sa</Text>
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+
             {profile.id == props.form.profile ? (
               <View className="relative">
                 <TouchableOpacity

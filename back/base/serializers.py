@@ -9,9 +9,16 @@ from django.core.serializers import serialize
 
 
 class ProfileSerializer(ModelSerializer):
+
+    username = serializers.SerializerMethodField('get_username')
+
     class Meta:
         model       = Profile
-        fields      = "__all__"        
+        fields      = "__all__"    
+
+    def get_username(self,profile):
+        username = profile.user.username
+        return username    
         
 class FormSerializer(ModelSerializer):
     username = serializers.SerializerMethodField('get_username')

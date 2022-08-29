@@ -140,6 +140,7 @@ const Home = ({ navigation }) => {
         },
       }
     );
+    console.log(response.status);
     if (response.status === 200) {
       let data = await response.json();
       setProfile(data);
@@ -190,7 +191,9 @@ const Home = ({ navigation }) => {
         >
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("Profile", {
+                profile: profile,
+              });
             }}
           >
             <View>
@@ -200,7 +203,7 @@ const Home = ({ navigation }) => {
                 }}
                 className="h-12 w-12 rounded-full"
                 onPress={() => {
-                  navigation.navigate("Profile");
+                  navigation.navigate("Profile", { profile: profile });
                 }}
               />
               <Text className="font-bold text-xl mt-1">{user.username}</Text>
@@ -208,7 +211,7 @@ const Home = ({ navigation }) => {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("Profile", { profile: profile });
             }}
           >
             <View
@@ -409,7 +412,7 @@ const Home = ({ navigation }) => {
                         }}
                         className="h-12 w-12 rounded-full"
                         onPress={() => {
-                          navigation.navigate("Profile");
+                          navigation.navigate("Profile", { profile: profile });
                         }}
                       />
                     </View>

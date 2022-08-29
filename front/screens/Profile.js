@@ -20,9 +20,9 @@ import { colors } from "../colors/colors";
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 
-const Profile = ({ navigation }) => {
+const Profile = (props) => {
   let { user, urlBase } = useContext(AuthContext);
-  const [profile, setProfile] = useState();
+  const [profile, setProfile] = useState(props.route.params.profile);
   const [profilesForm, setProfilesForm] = useState([]);
   const [profilesFormsWithImages, setProfilesFormsWithImages] = useState([]);
   const [profilesLikeds, setProfilesLikeds] = useState([]);
@@ -43,7 +43,7 @@ const Profile = ({ navigation }) => {
 
   let getProfilesForms = async () => {
     let response = await fetch(
-      `http://${urlBase}/api/profile/${user.user_id}/forms/`,
+      `http://${urlBase}/api/profile/${profile.user}/forms/`,
       {
         method: "GET",
         headers: {
@@ -58,9 +58,9 @@ const Profile = ({ navigation }) => {
     }
   };
 
-  let getProfile = async () => {
+  let getProfilesLikedForms = async () => {
     let response = await fetch(
-      `http://${urlBase}/api/profile/${user.user_id}/`,
+      `http://${urlBase}/api/profile/${profile.user}/forms/liked/`,
       {
         method: "GET",
         headers: {
@@ -70,13 +70,14 @@ const Profile = ({ navigation }) => {
     );
     if (response.status === 200) {
       let data = await response.json();
-      setProfile(data);
+      console.log(data);
+      setProfilesLikeds(data);
     }
   };
 
   useEffect(() => {
-    getProfile();
     getProfilesForms();
+    getProfilesLikedForms();
   }, [isFocused]);
 
   let tweetlerRef = useRef();
@@ -132,12 +133,14 @@ const Profile = ({ navigation }) => {
       getProfile();
     }
   };
+  console.log(profilesLikeds);
+
   if (profile && finalState) {
     return (
       <SafeAreaView className="container bg-white h-full">
         <TouchableWithoutFeedback
           onPress={() => {
-            navigation.goBack();
+            props.navigation.goBack();
           }}
           className="h-10 w-10"
         >
@@ -196,7 +199,7 @@ const Profile = ({ navigation }) => {
             }}
           >
             <Text className="font-bold text-lg ml-6 mt-10">
-              {user.username}
+              {profile.username}
             </Text>
           </View>
           <View className="flex-row absolute right-4 top-3 w-1/3 justify-around">
@@ -267,7 +270,7 @@ const Profile = ({ navigation }) => {
               <ProfileFormSingle
                 form={form}
                 key={form.id}
-                navigation={navigation}
+                navigation={props.navigation}
                 getProfilesForms={getProfilesForms}
               />
             );

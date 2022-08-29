@@ -145,3 +145,20 @@ def FormAnswerAnswers(request,pk):
     return HttpResponse(json.dumps(serializer.data))
 
     
+def ProfilesLikedForms(request,pk):
+    profile = get_object_or_404(Profile,user=get_object_or_404(User,id=pk))
+    form_answers = []
+    answer_all = FormAnswer.objects.all()
+    for i in answer_all:
+        if profile in i.formanswerlike.all():
+            form_answers.append(get_object_or_404(FormAnswer,id=i.id))
+    forms = []
+
+    form_all = Form.objects.all()
+    for i in form_all:
+        if profile in i.like.all():
+            forms.append(get_object_or_404(Form,id=i.id))
+
+    answer_serializer = FormAnswerSerializer(answer_all,many=True)
+    form_serializer = FormSerializer(form_all,many=True)
+    return HttpResponse(form_serializer.data)

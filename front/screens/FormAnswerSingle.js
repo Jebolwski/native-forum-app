@@ -102,7 +102,7 @@ const FormSingle = (props) => {
             <TouchableWithoutFeedback
               onPress={() => {
                 props.navigation.navigate("Profile", {
-                  form: props.form.profile,
+                  profile: props.form.profileObj,
                 });
               }}
             >
@@ -187,7 +187,6 @@ const FormSingle = (props) => {
             className="mt-3"
             useRef={props.formUserRef}
             onPress={() => {
-              console.log(props.form);
               props.navigation.push("AnswerTweet", {
                 form: props.form,
                 profile: profile,

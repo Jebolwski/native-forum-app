@@ -34,11 +34,9 @@ const AnswerTweet = ({ navigation, route }) => {
     }
   };
 
-  const isFocused = useIsFocused();
-
   useEffect(() => {
     GetformAnswers();
-  }, [isFocused]);
+  }, []);
 
   return (
     <View className="m-0 p-0 h-full bg-white">
