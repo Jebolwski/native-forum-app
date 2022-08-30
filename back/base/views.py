@@ -66,7 +66,6 @@ def ProfileForms(request,pk):
     profile = Profile.objects.get(user=User.objects.get(id=pk))
     forms = Form.objects.filter(profile=profile).order_by("-edit")
     serializer = FormSerializer(forms, many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
 
@@ -132,7 +131,6 @@ def AnswerForm(request,pk):
 @api_view(['GET'])
 def FormAnswers(request,pk):
     form = FormAnswer.objects.filter(form = get_object_or_404(Form,id=pk), parent = None)
-    print(form)
     serializer = FormAnswerSerializer(form,many=True)
     return HttpResponse(json.dumps(serializer.data))
 
@@ -144,7 +142,8 @@ def FormAnswerAnswers(request,pk):
     serializer = FormAnswerSerializer(form,many=True)
     return HttpResponse(json.dumps(serializer.data))
 
-    
+
+@api_view(['GET'])
 def ProfilesLikedForms(request,pk):
     profile = get_object_or_404(Profile,user=get_object_or_404(User,id=pk))
     form_answers = []
@@ -152,8 +151,9 @@ def ProfilesLikedForms(request,pk):
     for i in answer_all:
         if profile in i.formanswerlike.all():
             form_answers.append(get_object_or_404(FormAnswer,id=i.id))
+    
+    
     forms = []
-
     form_all = Form.objects.all()
     for i in form_all:
         if profile in i.like.all():
@@ -161,4 +161,4 @@ def ProfilesLikedForms(request,pk):
 
     answer_serializer = FormAnswerSerializer(answer_all,many=True)
     form_serializer = FormSerializer(form_all,many=True)
-    return HttpResponse(form_serializer.data)
+    return Response(form_serializer.data)

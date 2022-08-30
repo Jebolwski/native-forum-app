@@ -70,7 +70,6 @@ const Profile = (props) => {
     );
     if (response.status === 200) {
       let data = await response.json();
-      console.log(data);
       setProfilesLikeds(data);
     }
   };
@@ -133,7 +132,6 @@ const Profile = (props) => {
       getProfile();
     }
   };
-  console.log(profilesLikeds);
 
   if (profile && finalState) {
     return (

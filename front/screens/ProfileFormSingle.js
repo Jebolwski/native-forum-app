@@ -98,7 +98,7 @@ const ProfileFormSingle = (props) => {
           <View className="relative flex-row justify-between">
             <TouchableWithoutFeedback
               onPress={() => {
-                props.navigation.navigate("Profile", {
+                props.navigation.push("Profile", {
                   profile: props.form.profileObj,
                 });
               }}

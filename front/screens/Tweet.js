@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -59,14 +60,21 @@ const Tweet = ({ navigation, route }) => {
         </View>
       </View>
       <View className="p-3 flex-row">
-        <View className="flex justify-center">
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile", {
+              profile: form.profileObj,
+            });
+          }}
+          className="flex justify-center"
+        >
           <Image
             source={{
               uri: `http://${urlBase}/api${form.profileObj.profile_pic}`,
             }}
             className="h-9 w-9 border rounded-full"
           />
-        </View>
+        </TouchableOpacity>
         <View className="ml-5">
           <Text className="font-bold text-lg">{form.username}</Text>
           <Text className="text-gray-700 font-light">

@@ -140,7 +140,6 @@ const Home = ({ navigation }) => {
         },
       }
     );
-    console.log(response.status);
     if (response.status === 200) {
       let data = await response.json();
       setProfile(data);
