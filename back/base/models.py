@@ -21,7 +21,7 @@ class Profile(models.Model):
 class Form(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE,null=False,blank=False,verbose_name="Profile")
     body = models.TextField(max_length=160,null=False,blank=False,verbose_name="Form body")
-    image = models.FileField(upload_to='profilePhotos',null=True,blank=True,default='default.jpg',verbose_name="Image")
+    image = models.FileField(upload_to='profilePhotos',null=True,blank=True,verbose_name="Image")
     goruldu = models.ManyToManyField(User,related_name='goruldu',blank=True,verbose_name="Görüldü")
     like = models.ManyToManyField(Profile,related_name='form_like',blank=True,verbose_name="Likes")
     create = models.DateTimeField(auto_now=True,verbose_name="Create")

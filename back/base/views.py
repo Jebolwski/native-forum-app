@@ -1,9 +1,11 @@
+from cgitb import reset
 from django.http import HttpResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 from .models import Form, FormAnswer, Profile
 from .serializers import FormAnswerSerializer, FormSerializer, ProfileSerializer
 from django.shortcuts import get_object_or_404
@@ -31,9 +33,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #!Creating a form.
 @api_view(['GET','POST'])
 def CreateForm(request):
-    serializer = FormSerializer(data = request.data, many=False)
-    if serializer.is_valid():
-        serializer.save()
+    a = Form.objects.create(
+        profile=Profile.objects.get(id=request.data.get("profile")),
+        body=request.data.get("body"),
+        image=request.data.get("photo"),
+    )
+    serializer = FormSerializer(a,many=False)
     return Response(serializer.data)
 
 
@@ -52,7 +57,17 @@ def DeleteForm(request,pk):
     return Response("OK")
 
 
+#!Deleting a form answer. 
+@api_view(['POST'])
+def DeleteFormAnswer(request,pk):
+    form = get_object_or_404(Form,id=pk)
+    form.delete()
+    return Response("OK")
+
+
+
 #!Getting a specific profile.
+@csrf_exempt
 @api_view(['GET'])
 def GetProfile(request,pk):
     profile = Profile.objects.get(user=User.objects.get(id=pk))

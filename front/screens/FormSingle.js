@@ -78,6 +78,7 @@ const FormSingle = (props) => {
 
   useEffect(() => {
     getProfile();
+    setVal(1);
   }, []);
 
   if (!profile) {
@@ -181,7 +182,7 @@ const FormSingle = (props) => {
             ) : null}
           </View>
           <Text
-            className="mt-3"
+            className="mt-2 ml-12"
             useRef={props.formUserRef}
             onPress={() => {
               props.navigation.navigate("Tweet", {
@@ -192,6 +193,14 @@ const FormSingle = (props) => {
           >
             {props.form.body}
           </Text>
+          {props.form.image ? (
+            <View className="ml-12 my-3">
+              <Image
+                source={{ uri: `http://${urlBase}/api${props.form.image}` }}
+                className="w-48 h-48 rounded-lg"
+              />
+            </View>
+          ) : null}
           <View className="flex-row justify-around mt-4 mb-1">
             <Text
               onPress={() => {

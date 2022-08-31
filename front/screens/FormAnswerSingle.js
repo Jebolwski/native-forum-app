@@ -39,12 +39,15 @@ const FormSingle = (props) => {
   };
 
   const deleteForm = async (id) => {
-    let response = await fetch(`http://${urlBase}/api/form/${id}/delete/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    let response = await fetch(
+      `http://${urlBase}/api/form/answer/${id}/delete/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.status == "200") {
       let data = props.forms.filter(function (form) {
         return form.id != id;
@@ -81,6 +84,7 @@ const FormSingle = (props) => {
 
   useEffect(() => {
     getProfile();
+    setVal(1);
   }, [isFocused]);
 
   if (!profile) {
@@ -139,7 +143,7 @@ const FormSingle = (props) => {
               <View className="relative">
                 <TouchableOpacity
                   onPress={() => {
-                    setVal(val == 0 ? 1 : 0);
+                    setVal(val == 1 ? 0 : 1);
                     Animated.timing(scale1, {
                       toValue: val,
                       duration: 200,

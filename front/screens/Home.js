@@ -14,6 +14,7 @@ import {
   Animated,
   Easing,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
 import AuthContext from "../AuthContext";
@@ -35,6 +36,8 @@ const Home = ({ navigation }) => {
   const [answerBody, setAnswerBody] = useState();
   const [answermodalVisible, setAnswermodalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState();
+  const [result, setResult] = useState();
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
   );
@@ -51,31 +54,6 @@ const Home = ({ navigation }) => {
     if (response.status == "200") {
       let data = await response.json();
       setForms(data);
-    }
-  };
-
-  const createForm = async () => {
-    if (body == "" || body == undefined || body == null) {
-      alert("Enter something to add a note.");
-    } else {
-      let response = await fetch(`http://${urlBase}/api/create-form/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          body: body,
-          profile: profile?.id,
-        }),
-      });
-      if (response.status == "200") {
-        let data = await response.json();
-        setForms([data, ...forms]);
-        LayoutAnimation.configureNext(layoutconfig);
-        setBody("");
-        textRef.current.clear();
-        setModalVisible(false);
-      }
     }
   };
 
@@ -163,6 +141,60 @@ const Home = ({ navigation }) => {
   BackHandler.addEventListener("hardwareBackPress", function () {
     return true;
   });
+
+  const upload = async () => {
+    const result = await launchCamera(options);
+  };
+
+  const pickImage = async (a, b) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [a, b],
+      quality: 1,
+    });
+
+    setResult(result);
+    var formdata = new FormData();
+    formdata.append("photo", result.uri);
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  let duzenle = async () => {
+    var formdata = new FormData();
+    if (image != null) {
+      formdata.append("photo", {
+        name: new Date() + "_profile",
+        uri: image,
+        type: "image/jpg",
+      });
+    }
+    formdata.append("body", body);
+    formdata.append("profile", profile?.id);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      credentials: "same-origin",
+    };
+    let response = await fetch(
+      `http://${urlBase}/api/create-form/`,
+      requestOptions
+    );
+    if (response.status == 200) {
+      let data = await response.json();
+      console.log(data);
+      setForms([data, ...forms]);
+      LayoutAnimation.configureNext(layoutconfig);
+      setBody("");
+      setImage();
+      setResult();
+      textRef.current.clear();
+      setModalVisible(false);
+    }
+  };
 
   if (!profile) {
     return (
@@ -386,7 +418,7 @@ const Home = ({ navigation }) => {
                     >
                       <AntDesign name="close" size={26} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={createForm}>
+                    <TouchableOpacity onPress={duzenle}>
                       <View
                         className="px-2 rounded-2xl"
                         style={[
@@ -434,12 +466,44 @@ const Home = ({ navigation }) => {
                       }}
                     />
                   </View>
+                  <View className="ml-16">
+                    {image ? (
+                      <View className="relative">
+                        <Image source={{ uri: image }} className="h-80" />
+                        <View
+                          style={{
+                            position: "absolute",
+                            top: 3,
+                            left: 3,
+                            borderRadius: 100,
+                            backgroundColor: "rgba(40,40,40,0.6)",
+                            padding: 10,
+                          }}
+                        >
+                          <Evil
+                            onPress={() => {
+                              setResult();
+                              setImage();
+                            }}
+                            name="close"
+                            size={22}
+                            color={"white"}
+                          />
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
                 </View>
                 <View className="absolute bottom-0 left-0 w-full p-3 vertical-icons flex ml-3">
                   <View className="flex-row justify-between">
-                    <View style={{ display: "flex", justifyContent: "center" }}>
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        pickImage(3, 3);
+                      }}
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
                       <Icon name="image" color={colors.blue} size={19} />
-                    </View>
+                    </TouchableWithoutFeedback>
                     <View style={{ display: "flex", justifyContent: "center" }}>
                       <Icon name="smile-o" color={colors.blue} size={19} />
                     </View>

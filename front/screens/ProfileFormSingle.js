@@ -78,6 +78,7 @@ const ProfileFormSingle = (props) => {
 
   useEffect(() => {
     getProfile();
+    setVal(1);
   }, []);
 
   if (!profile) {
