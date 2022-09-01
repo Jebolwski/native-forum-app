@@ -133,13 +133,15 @@ def LikeDislikeFormAnswer(request,pk):
 @api_view(['POST'])
 def AnswerForm(request,pk):
     form = Form.objects.get(id=pk)
-    serializer = FormAnswerSerializer(data = request.data,many=False)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(form.profile.user.username+" adlı kullanıcının formu cevaplandı.")
-    else:
-        return Response(request.data)
-
+    print(request.data)
+    a = FormAnswer.objects.create(
+        body=request.data.get("body"),
+        form=Form.objects.get(id=request.data.get("form")),
+        parent=None,
+        image = request.data.get("photo"),
+        profile = Profile.objects.get(id=request.data.get("profile"))
+    )
+    return Response("Oluştu.")
 
 
 #!A specific forms answers.

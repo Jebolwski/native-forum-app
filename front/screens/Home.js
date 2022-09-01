@@ -434,7 +434,6 @@ const Home = ({ navigation }) => {
                       </View>
                     </TouchableOpacity>
                   </View>
-
                   <View className="flex-row mt-5">
                     <View>
                       <Image

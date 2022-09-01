@@ -181,9 +181,7 @@ const FormSingle = (props) => {
               </View>
             ) : null}
           </View>
-          <Text
-            className="mt-2 ml-12"
-            useRef={props.formUserRef}
+          <TouchableOpacity
             onPress={() => {
               props.navigation.navigate("Tweet", {
                 form: props.form,
@@ -191,16 +189,18 @@ const FormSingle = (props) => {
               });
             }}
           >
-            {props.form.body}
-          </Text>
-          {props.form.image ? (
-            <View className="ml-12 my-3">
-              <Image
-                source={{ uri: `http://${urlBase}/api${props.form.image}` }}
-                className="w-48 h-48 rounded-lg"
-              />
-            </View>
-          ) : null}
+            <Text className="mt-2 ml-12" useRef={props.formUserRef}>
+              {props.form.body}
+            </Text>
+            {props.form.image ? (
+              <View className="ml-12 my-3">
+                <Image
+                  source={{ uri: `http://${urlBase}/api${props.form.image}` }}
+                  className="w-48 h-48 rounded-lg"
+                />
+              </View>
+            ) : null}
+          </TouchableOpacity>
           <View className="flex-row justify-around mt-4 mb-1">
             <Text
               onPress={() => {

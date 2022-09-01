@@ -17,6 +17,7 @@ import {
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
 import AuthContext from "../AuthContext";
+import * as ImagePicker from "expo-image-picker";
 import FormSingle from "../screens/FormSingle";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -32,6 +33,8 @@ const AnswerForm = (props) => {
   let { user, urlBase } = useContext(AuthContext);
   const [textBody, setTextBody] = useState();
   const [profile, setProfile] = useState();
+  const [image, setImage] = useState();
+  const [result, setResult] = useState();
   let getProfile = async () => {
     let response = await fetch(
       `http://${urlBase}/api/profile/${user?.user_id}/`,
@@ -74,6 +77,54 @@ const AnswerForm = (props) => {
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
   );
+
+  const upload = async () => {
+    const result = await launchCamera(options);
+  };
+
+  const pickImage = async (a, b) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [a, b],
+      quality: 1,
+    });
+
+    setResult(result);
+    var formdata = new FormData();
+    formdata.append("photo", result.uri);
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  let duzenle = async () => {
+    var formdata = new FormData();
+    if (image != null) {
+      formdata.append("photo", {
+        name: new Date() + "_profile",
+        uri: image,
+        type: "image/jpg",
+      });
+    }
+    formdata.append("body", textBody);
+    formdata.append("profile", profile?.id);
+    formdata.append("form", form_id);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      credentials: "same-origin",
+    };
+    let response = await fetch(
+      `http://${urlBase}/api/form/${form_id}/answer/`,
+      requestOptions
+    );
+    if (response.status === 200) {
+      props.navigation.goBack();
+    }
+  };
+
   if (profile) {
     return (
       <View className="w-full">
@@ -94,7 +145,7 @@ const AnswerForm = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   className="flex justify-center"
-                  onPress={AnswerForm}
+                  onPress={duzenle}
                 >
                   <View
                     className="px-2 rounded-2xl"
@@ -149,6 +200,7 @@ const AnswerForm = (props) => {
                       }}
                       multiline={true}
                       ref={textRef}
+                      maxLength={160}
                       onChangeText={(text) => {
                         setTextBody(text);
                         if (text.length > 0) {
@@ -159,14 +211,49 @@ const AnswerForm = (props) => {
                       }}
                     />
                   </View>
+                  <View className="ml-16">
+                    {image ? (
+                      <View className="relative">
+                        <Image
+                          source={{ uri: image }}
+                          className="h-72 w-11/12 rounded-lg"
+                        />
+                        <View
+                          style={{
+                            position: "absolute",
+                            top: 3,
+                            left: 3,
+                            borderRadius: 100,
+                            backgroundColor: "rgba(40,40,40,0.6)",
+                            padding: 10,
+                          }}
+                        >
+                          <Evil
+                            onPress={() => {
+                              setResult();
+                              setImage();
+                            }}
+                            name="close"
+                            size={22}
+                            color={"white"}
+                          />
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
                 </View>
               </View>
             </View>
             <View className="absolute bottom-0 left-0 w-full px-5 py-3 vertical-icons flex">
               <View className="flex-row justify-between">
-                <View style={{ display: "flex", justifyContent: "center" }}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    pickImage(3, 3);
+                  }}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
                   <Icon name="image" color={colors.blue} size={19} />
-                </View>
+                </TouchableWithoutFeedback>
                 <View style={{ display: "flex", justifyContent: "center" }}>
                   <Icon name="smile-o" color={colors.blue} size={19} />
                 </View>

@@ -16,6 +16,7 @@ const AnswerTweet = ({ navigation, route }) => {
   let form = route.params.form;
   let { url, urlBase } = useContext(AuthContext);
   const [formAnswers, setFormAnswers] = useState();
+
   const [show, setShow] = useState(false);
 
   let GetformAnswers = async () => {
@@ -74,6 +75,14 @@ const AnswerTweet = ({ navigation, route }) => {
       </View>
       <View className="p-3 pb-1 border-b border-gray-600">
         <Text className="text-xl">{form.body}</Text>
+        {form.image ? (
+          <View className="my-3">
+            <Image
+              source={{ uri: `http://${urlBase}/api${form.image}` }}
+              className="w-48 h-48 rounded-lg"
+            />
+          </View>
+        ) : null}
         <View className="py-3">
           <Text>{form.create}</Text>
         </View>

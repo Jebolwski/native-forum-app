@@ -83,7 +83,13 @@ const Tweet = ({ navigation, route }) => {
         </View>
       </View>
       <View className="p-3 pb-1 border-b border-gray-600">
-        <Text className="text-xl">{form.body}</Text>
+        <Text className="text-xl mt-2 mb-4">{form.body}</Text>
+        {form.image ? (
+          <Image
+            source={{ uri: `http://${urlBase}/api${form.image}` }}
+            className="w-48 h-48 rounded-lg"
+          />
+        ) : null}
         <View className="py-3">
           <Text>{form.create}</Text>
         </View>
