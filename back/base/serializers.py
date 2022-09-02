@@ -1,5 +1,6 @@
 from dataclasses import field
 import json
+from this import d
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from .models import Form, FormAnswer, Profile
@@ -50,10 +51,22 @@ class FormAnswerSerializer(ModelSerializer):
     username = serializers.SerializerMethodField('get_username')
     answer_count = serializers.SerializerMethodField('get_answer_count')
     profileObj = serializers.SerializerMethodField('get_profile')
+    parents = serializers.SerializerMethodField('parent_answer')
+
 
     class Meta:
         model       = FormAnswer
         fields      = "__all__"
+
+    def parent_answer(self,formanswer):
+        dizi = []
+        while formanswer.parent != None and formanswer.profile.user.username not in dizi:
+            dizi.append(formanswer.profile.user.username)
+            formanswer=formanswer.parent
+        if formanswer.form.profile.user.username:
+            dizi.append(formanswer.form.profile.user.username)
+            
+        return dizi
     
     
 

@@ -60,7 +60,7 @@ def DeleteForm(request,pk):
 #!Deleting a form answer. 
 @api_view(['POST'])
 def DeleteFormAnswer(request,pk):
-    form = get_object_or_404(Form,id=pk)
+    form = get_object_or_404(FormAnswer,id=pk)
     form.delete()
     return Response("OK")
 
@@ -120,12 +120,12 @@ def LikeDislikeFormAnswer(request,pk):
     formanswer = FormAnswer.objects.get(id=pk)
     user = request.data.get("user_id")
     profile = Profile.objects.get(user=user)
-    if not profile in formanswer.like.all():
-        formanswer.like.add(profile)
-        return Response(len(formanswer.like.all()))
+    if not profile in formanswer.formanswerlike.all():
+        formanswer.formanswerlike.add(profile)
+        return Response(len(formanswer.formanswerlike.all()))
     else:
-        formanswer.like.remove(profile)
-        return Response(len(formanswer.like.all()))
+        formanswer.formanswerlike.remove(profile)
+        return Response(len(formanswer.formanswerlike.all()))
 
 
 
@@ -140,6 +140,20 @@ def AnswerForm(request,pk):
         parent=None,
         image = request.data.get("photo"),
         profile = Profile.objects.get(id=request.data.get("profile"))
+    )
+    return Response("Oluştu.")
+
+
+#!Answer a specific forms answer.
+@api_view(['POST'])
+def AnswerFormAnswer(request,pk):
+    print(request.data)
+    a = FormAnswer.objects.create(
+        body=request.data.get("body"),
+        form=Form.objects.get(id=request.data.get("parent_id")),
+        parent=FormAnswer.objects.get(id = request.data.get("form_id")),
+        image = request.data.get("photo"),
+        profile = Profile.objects.get(id=request.data.get("profile_id"))
     )
     return Response("Oluştu.")
 

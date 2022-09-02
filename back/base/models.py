@@ -35,10 +35,12 @@ class FormAnswer(MPTTModel):
     form = models.ForeignKey(Form,on_delete=models.CASCADE,null=False,blank=False)
     body = models.TextField(max_length=160,null=False,blank=False)
     parent = TreeForeignKey('self', on_delete = models.CASCADE, null=True, blank=True, related_name='Children')
-    image = models.ImageField(upload_to="profilePhotos",null=True,blank=True,default="default.jpg")
+    image = models.ImageField(upload_to="profilePhotos",null=True,blank=True)
     formanswerlike = models.ManyToManyField(Profile,null=True,blank=True,related_name='form_answer_like')
     create = models.DateTimeField(auto_now=True)
     edit = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.profile.user.username + " ---------- " + self.body
+
+    

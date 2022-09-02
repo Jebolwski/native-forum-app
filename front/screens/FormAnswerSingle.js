@@ -17,7 +17,7 @@ import { colors } from "../colors/colors";
 import slugify from "react-slugify";
 import AuthContext from "../AuthContext";
 
-const FormSingle = (props) => {
+const FormAnswerSingle = (props) => {
   let { user, urlBase } = useContext(AuthContext);
   const [likeCount, setLikeCount] = useState(props.form.formanswerlike.length);
   const [profile, setProfile] = useState();
@@ -49,10 +49,10 @@ const FormSingle = (props) => {
       }
     );
     if (response.status == "200") {
-      let data = props.forms.filter(function (form) {
+      let data = props.formAnswers.filter(function (form) {
         return form.id != id;
       });
-      props.setForms(data);
+      props.setFormAnswers(data);
     }
   };
 
@@ -72,7 +72,7 @@ const FormSingle = (props) => {
     if (response.status == "200") {
       let data = await response.json();
       setLikeCount(data);
-      props.getFormAnswers();
+      props.GetformAnswers();
     }
   };
 
@@ -195,12 +195,11 @@ const FormSingle = (props) => {
               });
             }}
           >
-            <Text className="mt-3" useRef={props.formUserRef}>
+            <Text className="mt-3 ml-3" useRef={props.formUserRef}>
               {props.form.body}
             </Text>
-            {console.log(props.form)}
             {props.form.image ? (
-              <View className="my-3">
+              <View className="my-3 ml-3">
                 <Image
                   source={{ uri: `http://${urlBase}/api${props.form.image}` }}
                   className="w-48 h-48 rounded-lg"
@@ -213,7 +212,6 @@ const FormSingle = (props) => {
               onPress={() => {
                 props.navigation.navigate("AnswerFormAnswer", {
                   form: props.form,
-
                   profile: profile,
                 });
               }}
@@ -247,4 +245,4 @@ const FormSingle = (props) => {
   }
 };
 
-export default FormSingle;
+export default FormAnswerSingle;

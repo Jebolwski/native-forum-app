@@ -182,7 +182,7 @@ const ProfileFormSingle = (props) => {
             ) : null}
           </View>
           <Text
-            className="mt-3"
+            className="mt-3 ml-3"
             useRef={props.formUserRef}
             onPress={() => {
               props.navigation.navigate("Tweet", {
@@ -193,6 +193,14 @@ const ProfileFormSingle = (props) => {
           >
             {props.form.body}
           </Text>
+          {props.form.image ? (
+            <View className="my-3 ml-3">
+              <Image
+                source={{ uri: `http://${urlBase}/api${props.form.image}` }}
+                className="w-48 h-48 rounded-lg"
+              />
+            </View>
+          ) : null}
           <View className="flex-row justify-around mt-4 mb-1">
             <Text
               onPress={() => {

@@ -14,11 +14,12 @@ import {
   Animated,
   Easing,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-navigation";
 import AuthContext from "../AuthContext";
 import FormSingle from "../screens/FormSingle";
-import { useIsFocused } from "@react-navigation/native";
+
 import Icon from "react-native-vector-icons/FontAwesome";
 import Evil from "react-native-vector-icons/EvilIcons";
 import Foundation from "react-native-vector-icons/Foundation";
@@ -27,11 +28,17 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const AnswerFormAnswer = (props) => {
-  let creator = props.route.params.form.username;
+  let creators = props.route.params.form.parents;
+  let creators_minus_one = creators.slice(0, creators.length - 1);
+  let creators_last = creators.slice(creators.length - 1, creators.length);
   let form_id = props.route.params.form.id;
+  let parent_id = props.route.params.form.form;
+
   let { user, urlBase } = useContext(AuthContext);
   const [textBody, setTextBody] = useState();
   const [profile, setProfile] = useState();
+  const [image, setImage] = useState();
+  const [result, setResult] = useState();
   let getProfile = async () => {
     let response = await fetch(
       `http://${urlBase}/api/profile/${user?.user_id}/`,
@@ -48,20 +55,48 @@ const AnswerFormAnswer = (props) => {
     }
   };
 
-  let AnswerForm = async () => {
+  const upload = async () => {
+    const result = await launchCamera(options);
+  };
+
+  const pickImage = async (a, b) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [a, b],
+      quality: 1,
+    });
+
+    setResult(result);
+    var formdata = new FormData();
+    formdata.append("photo", result.uri);
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  let duzenle = async () => {
+    var formdata = new FormData();
+    if (image != null) {
+      formdata.append("photo", {
+        name: new Date() + "_profile",
+        uri: image,
+        type: "image/jpg",
+      });
+    }
+    formdata.append("body", textBody);
+    formdata.append("profile_id", profile?.id);
+    formdata.append("form_id", form_id);
+    formdata.append("parent_id", parent_id);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      credentials: "same-origin",
+    };
     let response = await fetch(
-      `http://${urlBase}/api/form/${form_id}/answer/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          form: form_id,
-          profile: profile.id,
-          body: textBody,
-        }),
-      }
+      `http://${urlBase}/api/form/answer/${form_id}/answer/`,
+      requestOptions
     );
     if (response.status === 200) {
       props.navigation.goBack();
@@ -75,6 +110,7 @@ const AnswerFormAnswer = (props) => {
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     "rgba(29, 155, 240,0.7)"
   );
+
   if (profile) {
     return (
       <View className="w-full">
@@ -95,7 +131,7 @@ const AnswerFormAnswer = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   className="flex justify-center"
-                  onPress={AnswerForm}
+                  onPress={duzenle}
                 >
                   <View
                     className="px-2 rounded-2xl"
@@ -126,8 +162,22 @@ const AnswerFormAnswer = (props) => {
                     />
                     <View className="w-4/5 mt-1">
                       <Text>
-                        <Text style={{ color: colors.blue }}>@{creator}</Text>{" "}
-                        adlı kullanıcıya yanıt olarak
+                        {creators && creators.length > 1 ? (
+                          <Text style={{ color: colors.blue }}>
+                            {creators_minus_one.map((creator) => {
+                              return <Text>@{creator} ve </Text>;
+                            })}
+                            <Text>
+                              @{creators_last} adlı kullanıcılara yanıt olarak
+                            </Text>
+                          </Text>
+                        ) : (
+                          <Text style={{ color: colors.blue }}>
+                            <Text>
+                              @{creators[0]} adlı kullanıcıya yanıt olarak
+                            </Text>
+                          </Text>
+                        )}{" "}
                       </Text>
                     </View>
                   </View>
@@ -160,14 +210,49 @@ const AnswerFormAnswer = (props) => {
                       }}
                     />
                   </View>
+                  <View className="ml-16">
+                    {image ? (
+                      <View className="relative">
+                        <Image
+                          source={{ uri: image }}
+                          className="h-72 w-11/12 rounded-lg"
+                        />
+                        <View
+                          style={{
+                            position: "absolute",
+                            top: 3,
+                            left: 3,
+                            borderRadius: 100,
+                            backgroundColor: "rgba(40,40,40,0.6)",
+                            padding: 10,
+                          }}
+                        >
+                          <Evil
+                            onPress={() => {
+                              setResult();
+                              setImage();
+                            }}
+                            name="close"
+                            size={22}
+                            color={"white"}
+                          />
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
                 </View>
               </View>
             </View>
             <View className="absolute bottom-0 left-0 w-full px-5 py-3 vertical-icons flex">
               <View className="flex-row justify-between">
-                <View style={{ display: "flex", justifyContent: "center" }}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    pickImage(3, 3);
+                  }}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
                   <Icon name="image" color={colors.blue} size={19} />
-                </View>
+                </TouchableWithoutFeedback>
                 <View style={{ display: "flex", justifyContent: "center" }}>
                   <Icon name="smile-o" color={colors.blue} size={19} />
                 </View>

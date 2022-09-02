@@ -185,7 +185,6 @@ const Home = ({ navigation }) => {
     );
     if (response.status == 200) {
       let data = await response.json();
-      console.log(data);
       setForms([data, ...forms]);
       LayoutAnimation.configureNext(layoutconfig);
       setBody("");
