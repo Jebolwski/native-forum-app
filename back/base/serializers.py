@@ -63,7 +63,7 @@ class FormAnswerSerializer(ModelSerializer):
         while formanswer.parent != None and formanswer.profile.user.username not in dizi:
             dizi.append(formanswer.profile.user.username)
             formanswer=formanswer.parent
-        if formanswer.form.profile.user.username:
+        if formanswer.form.profile.user.username not in dizi:
             dizi.append(formanswer.form.profile.user.username)
             
         return dizi
