@@ -19,6 +19,7 @@ urlpatterns = [
     path('profile/<int:pk>/forms/', views.ProfileForms, name='profile-forms'),
     path('profile/<int:pk>/edit/', views.EditProfile, name='profile-forms'),
     path('profile/<int:pk>/forms/liked/', views.ProfilesLikedForms, name='profiles-liked-forms'),
+    path('profile/<int:pk>/forms/media/', views.ProfilesMediaForms, name='profiles-media-forms'),
 
     path('create-form/', views.CreateForm, name='create-form'),
     path('forms/', views.Forms, name='forms'),

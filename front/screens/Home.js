@@ -24,6 +24,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Evil from "react-native-vector-icons/EvilIcons";
 import Foundation from "react-native-vector-icons/Foundation";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { colors } from "../colors/colors";

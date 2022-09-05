@@ -173,7 +173,7 @@ def FormAnswerAnswers(request,pk):
     serializer = FormAnswerSerializer(form,many=True)
     return HttpResponse(json.dumps(serializer.data))
 
-
+#!A specific profiles liked forms.
 @api_view(['GET'])
 def ProfilesLikedForms(request,pk):
     profile = get_object_or_404(Profile,user=get_object_or_404(User,id=pk))
@@ -192,4 +192,20 @@ def ProfilesLikedForms(request,pk):
 
     answer_serializer = FormAnswerSerializer(answer_all,many=True)
     form_serializer = FormSerializer(form_all,many=True)
+    return Response(form_serializer.data)
+
+
+#!A specific profiles forms with media.
+@api_view(['GET'])
+def ProfilesMediaForms(request,pk):
+    profile = get_object_or_404(Profile,user=get_object_or_404(User,id=pk))
+    forms = Form.objects.filter(profile=profile).order_by('-create')
+    dizi = []
+    for i in forms:
+        if i.image!=None and i.image!="":
+            print(i.image)
+            dizi.append(get_object_or_404(Form,id=i.id))
+    print(dizi)
+    form_serializer = FormSerializer(dizi,many=True)
+
     return Response(form_serializer.data)

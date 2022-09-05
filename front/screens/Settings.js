@@ -112,7 +112,7 @@ const Settings = ({ navigation }) => {
               <AntDesign name="logout" size={22} />
             </View>
             <View>
-              <Text className="font-bold text-lg">Logout</Text>
+              <Text className="font-bold text-lg">Çıkış Yap</Text>
               <Text className="mt-1 text-gray-800">
                 Hesabın hakkındaki bilgileri gör, verilerinin arşivini indir
                 veya hesap devre dışı bırakma seçeneklerin hakkında bilgi edin.

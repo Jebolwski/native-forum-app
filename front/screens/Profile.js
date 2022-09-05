@@ -26,6 +26,7 @@ const Profile = (props) => {
   const [profilesForm, setProfilesForm] = useState([]);
   const [profilesFormsWithImages, setProfilesFormsWithImages] = useState([]);
   const [profilesLikeds, setProfilesLikeds] = useState([]);
+  const [profilesMedias, setProfilesMedias] = useState([]);
   const [begeniWidth, setBegeniWidth] = useState(0);
   const [tweetlerWidth, setTweetlerWidth] = useState(2);
   const [tweetlerveyanitlarWidth, setTweetlerveyanitlarWidth] = useState(0);
@@ -74,9 +75,26 @@ const Profile = (props) => {
     }
   };
 
+  let getProfilesMediaForms = async () => {
+    let response = await fetch(
+      `http://${urlBase}/api/profile/${profile.user}/forms/media/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200) {
+      let data = await response.json();
+      setProfilesMedias(data);
+    }
+  };
+
   useEffect(() => {
     getProfilesForms();
     getProfilesLikedForms();
+    getProfilesMediaForms();
   }, [isFocused]);
 
   let tweetlerRef = useRef();
@@ -236,8 +254,26 @@ const Profile = (props) => {
             <TouchableOpacity className="px-5 py-2" ref={tweetlerveyanitlarRef}>
               <Text className="text-center  p-1">Tweetler ve yanıtlar</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="px-5 py-2" ref={medyaRef}>
-              <Text className="text-center  p-1 ">Medya</Text>
+            <TouchableOpacity
+              className="px-5 py-2"
+              ref={medyaRef}
+              onPress={() => {
+                setFinalState(profilesMedias);
+                setTweetlerWidth(0);
+                setBegeniWidth(0);
+                setMedyaWidth(2);
+                setTweetlerveyanitlarWidth(0);
+              }}
+            >
+              <Text
+                className="text-center  p-1 "
+                style={{
+                  borderBottomWidth: medyaWidth,
+                  borderBottomColor: colors.blue,
+                }}
+              >
+                Medya
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="px-5 py-2"
